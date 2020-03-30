@@ -4,13 +4,17 @@ Resources for the paper **Comprehension of computer programs relies primarily on
 ## Folder structure
 
 ### Stimuli
-All stimuli related content is available in `stimuli/`.
+## Python
+All stimuli related to our Python experiments (Experiment 1) are available in `./stimuli/python/`.
 
 We have made available stimuli pertaining to the three conditions we test in our work -
 - `EN`: Codes with variable names in English.
 - `SENT`: English descriptions of these codes.
 - `JAP`: Codes with obfuscated variable names.
 
-They have been made available in two formats - CSVs and raw Python scripts, available at `./stimuli/python_files/` and `./stimuli/python_files/` respectively.
+They have been made available in two formats - CSVs and raw Python scripts, available at `./stimuli/python_files/` and `./stimuli/python/python_files/` respectively.
 
-In `./stimuli/python_files/`, we have shared three files each containing all the 108 stimuli, and three folders each containing individual files for the 108 stimuli across the three conditions.
+In `./stimuli/python/python_files/`, we have shared three files each containing all the 108 stimuli, and three folders each containing individual files for the 108 stimuli across the three conditions.
+
+## ScratchJr
+All stimuli related to our Python experiments (Experiment 2) are available in `./stimuli/scratchjr/`.
