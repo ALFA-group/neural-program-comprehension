@@ -1,8 +1,6 @@
 # The Neuroscience of Program Comprehension
 Resources for the paper **Comprehension of computer programs relies primarily on domain-general executive resources** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
 
-## Folder structure
-
 ## Stimuli
 ### Python
 All stimuli related to our Python experiments (Experiment 1) are available in `./stimuli/python/`.
