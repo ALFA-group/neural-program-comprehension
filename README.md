@@ -13,4 +13,4 @@ We have made available stimuli pertaining to the three conditions we test in our
 
 They have been made available in two formats - CSVs and raw Python scripts, available at `./stimuli/python_files/` and `./stimuli/python_files/` respectively.
 
-In `./stimuli/python_files/`, we have shared three files each containing all the XXX stimuli, and three folders each containing individual files for the XXX stimuli across the three conditions.
+In `./stimuli/python_files/`, we have shared three files each containing all the 108 stimuli, and three folders each containing individual files for the 108 stimuli across the three conditions.
