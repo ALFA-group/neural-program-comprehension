@@ -1,0 +1,2 @@
+You set up an experiment to calculate the length of a molecule. You know the actual length is 10 units and obtain a predicted length of 8 units. You allow an error of 3 units. If the difference between the predicted and actual length is less than the allowed error and greater than negative 1 multiplied by the allowed error, you report the difference between the predicted and actual length. Otherwise, you simply report the allowed error. What will you report?
+

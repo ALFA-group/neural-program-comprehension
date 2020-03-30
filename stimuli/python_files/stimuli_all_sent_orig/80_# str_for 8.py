@@ -1,0 +1,2 @@
+You have a blank whiteboard in front of you. For each position in the word "set", starting at 2 and ending at 3 (inclusive), you retrieve the letter at the position, append "ab" to it, and append this concatenated string to whatever word is written on the whiteboard. You then erase the board and instead write this new concatenated word. At the end of this exercise, what remains written on the board?
+

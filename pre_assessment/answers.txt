@@ -1,0 +1,98 @@
+# Corresponding to the PDF 
+# in commit ID fc50f708816d670954fd2225487e17c72cc1416e
+# and previously in commit ID 4d93a2fd25da24e5360b124fe13fca9c44da9b27 
+
+# 1
+300
+
+# 2
+5
+
+#3
+bc
+
+#4
+4
+
+#5
+Shek
+
+#6
+['s', 'i', 'r']
+
+# 1
+[2,3]
+
+# 2
+1 0 0 0
+2 1 0 0
+2 2 1 0
+2 2 2 1
+
+# 3
+list1 = [10, 'a']
+list2 = [123]
+list3 = [10, 'a']
+
+# 4
+True
+True
+True
+
+# 5
+1
+(2, 3, 4, 5)
+6
+{'a': 7, 'b': 8}
+
+# 6
+(1, 4, 7, 10)
+(2, 5, 8, 11)
+(3, 6, 9, 12)
+
+# 7
+2
+4
+5
+1
+6
+
+# 8
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4, 1]
+
+# 9
+def speak(self)
+
+# 10
+Either convert word1 to list, or create a new string and copy contents from word1 to it, while replacing space with required char.
+
+# 11
+int(choice) + random.randint...
+
+# 12
+splt = i.split(":")
+tpl = (splt[0], splt[1])
+lst_pairs.append(tpl)
+
+# 13
+class Visitor(Parent)
+
+# 14
+return lowest(first, rest[1:])
+
+# 15
+use eval or getattr
+def get(self):
+    func_name = 'function' + str(self.i)
+    func = getattr(self,func_name) 
+    func()
+
+# 16
+return ui()
+
+# 17
+DFS over array positions (i-1,j), (i+1,j), (i,j-1), (i,j+1)
+

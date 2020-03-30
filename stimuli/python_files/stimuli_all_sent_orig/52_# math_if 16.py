@@ -1,0 +1,2 @@
+The temperature outside is 70 degrees. The humidity is 100%. If the temperature is greater than or equal to 100 degrees, you say "A". Else, if the temperature is greater than or equal to 92 and the humidity is greater than 75, you say "B". Else, if the temperature is greater than 88 and the humidity is greater than or equal to 85, you say "C". Else, if the temperature equals 75 and the humidity is less than or equal to 65, you say "D". Else, you say "E". What do you say?
+

@@ -1,0 +1,323 @@
+# math_seq 1
+You have three carrots. Your friend Alice has its square. Your other friend Bob has its cube. How many carrots in total do you three have?
+
+# math_seq 2
+You have two numbers, 4 and 8. You calculate its sum and divide it by two. Then you calculate its variance, which is the sum of the squares of the difference between each of the two numbers and the mean. You then calculate the deviation, which is the square root of half of the variance. What is the deviation?
+
+# math_seq 3
+A point in space is represented using two coordinates. You are given two points: (3, 0) and (6, 4). The distance between two points is defined as the sum of squares of the difference between the corresponding coordinates of the two points. What is the square root of the distance between the two points?
+
+# math_seq 4
+Your height is 5 feet and your weight is 100 pounds. The BMI is defined as the ratio between the weight and the square of the height of a person. What is your BMI?
+
+# math_seq 5
+Alice and Bob play a game. Alice tells Bob 3432, a random number. Bob divides that number by 1000 but only keeps the integer part. He then multiplies this value by 1000 and subtracts it from the number Alice told him. He then tells Alice this difference. What does Bob tell Alice?
+
+# math_seq 6
+A point in space is defined by two coordinates. You are given two points (5, 3), and (7, 9). An average point is defined by averaging each of the respective coordinates of the two points. What are the coordinates of the average point of the given points in tuples?
+
+# math_seq 7
+Three toys are arranged on an aisle in a single row. If the first toy costs $11, the second costs $23, and the third costs $35, how much do the toys on the two ends cost in total?
+
+# math_seq 8
+A farmer places five vegetables he wants to sell on a table. Their prices per pound are $5, $3, $8, $4 and $9 dollars. He notes the values of the most expensive and the least expensive vegetable he plans to sell. What's the difference between these respective values?
+
+# math_seq 9
+A triangle has three sides to it. The first measures 12 inches. The second measures 13 inches. The third can be numerically calculated as the square root of the difference between squares of the second side and the first side. What's the length of the third side?
+
+# math_seq 10
+You are given two numbers, 4 and 8. The percentage of two numbers is obtained by dividing the first number by the second number, and then multiplying by 100. What is the percentage of the two numbers?
+
+# math_seq 11
+A party planner expects fifteen adults to attend a party. She also expects the ratio of adults to children to be 2.5. She can estimate the number of children present by dividing the number of adults by the ratio. How many children are expected to be at the party?
+
+# math_seq 12
+A packer has a box with length 3 feet, and width 5 feet. Assume 3 inches make a foot. He calculates the product of the length in inches and the width in inches. What number does the packer calculate?
+
+# math_seq 13
+A molecule has two atoms of hydrogen and two atoms of oxygen. There are 12 molecules in total. The total number of atoms across many molecules is defined as the product of the number of molecules and the sum total of the number of atoms in each molecule. What is the total number of atoms?
+
+# math_seq 14
+An apple costs $5, a pear costs $4, and an orange costs $2. When there are 4 apples, 4 pears, and 8 oranges, what is the total cost?
+
+# math_seq 15
+A machine is provided with two numbers, 4 and 3. Given these two numbers, the machine first calculates the square root of the first number, and then calculates the square of the second number. What is the sum of these calculated numbers?
+
+# math_seq 16
+You have two empty slots A and B to store balls. You add 4 balls to slot A. In B, you add the same number of balls as A and then add 5 more balls 5 times. You then remove 10 balls from slot B. You empty slot A and add one ball to it. Next, from B, you remove the number of balls present in A. Lastly, you then remove all the balls from slot B and add back the integer part of the quotient obtained when the number of balls that was present in slot B is divided by 3. What is the total number of balls in slot B?
+
+# math_seq 17
+Mina is given two numbers, 2 and 4. She first calculates the sum of their squares. She then calculates the square of their sum. Finally, she sums the two resulting values. What value does she get?
+
+# math_seq 18
+You are given three numbers: 1, 3.5, and 10. You divide the sum of the first and the third number by two, but smooth the response by only keeping the integer part. You then calculate the absolute value of the difference between the smoothed value and the second number. What do you get?
+
+# math_for 1
+You have observations from three experiments: 1, 5, and 3. You define a value 'product'. Starting from the first observation, the value will get updated as the product of the observation and three. After going through the three observations, what will the value be?
+
+# math_for 2
+Four people run a race and finish in 5, 7, 4, and 8 seconds respectively. Your watch started a second late, and hence you subtract 1 from each of the racers' times. What are their new times (in list)?
+
+# math_for 3
+A cashier believes he is given 5 items. In reality, there was one more item and they were priced 0 through 5 dollars. What is the actual total sum of the items?
+
+# math_for 4
+In a test-drive, three drivers finish a lap in 10, 2, and 30 seconds respectively. You initially write the number 1 on a chalk board. Starting from the first number, you multiply the time with the number on the board. You then erase the number on the board and replace it with the product you just calculated. After going through the times, what is written on the board in the end?
+
+# math_for 5
+You have three birds weighing 45, 60, and 37 grams respectively. For each of these birds, you note down the remainder of the weights of the birds when divided by 15. What are the numbers you write down in list?
+
+# math_for 6
+Karen sees a list of numbers written on the board: 3, 7, 0, 1, 2, and 2. She decides to find a product of every second number in the list. What number will Karen get in the end?
+
+# math_for 7
+Three different objects cost 3, 5, and 8 dollars respectively. Starting with the value 0, for each object, you update the value with the difference between the object's cost and the value. What is the value calculated after going through all three objects?
+
+# math_for 8
+Starting with 3 and going down to 0, Alice calculates the sum of the cubes of these integers. What sum does she obtain?
+
+# math_for 9
+During Halloween, a kid visits a neighborhood with 12 people in total, where each family consists of 4 people. She starts off with no candies, and visits each family in the neighborhood, receiving 2 candies from each family. How many candies does she receive in the end?
+
+# math_for 10
+You are given two numbers X and Y, with values 1 and 2. For each of the integers from 0 to 2, you calculate the cumulative sum of the product of X with Y raised to the power of the integer. What is the total sum calculated?
+
+# math_for 11
+You are given three lists of numbers: [4, 4, 6], [1, 2, 4], and [3, 2, 1]. For each index, you calculate the sum of the numbers at that index in the first two lists and add it to the number at that index in the third list. What is the updated third list at the end of this exercise?
+
+# math_for 12
+You are given the following list of pairs of numbers: [(1, 2), (3, 4), (-1, 9)]. You calculate the cumulative sum of the second element in each pair. What is the cumulative sum?
+
+# math_for 13
+Given the list [3, 1, 0, -2, 5], your friend Alice cumulatively sums the product of the number at each index and the index itself (the indexing starts from 0). What is the cumulative sum she calculates?
+
+# math_for 14
+For the three integers between 1 and 3 (included), you calculate the squares of the integers and write them one next to another. Report the last two numbers in the list you write down.
+
+# math_for 15
+You are given two lists: [1, 0, 2], which has indices, and [1, 4, 6], containing numbers. Assuming indices begin from 0, for every index present in the list of indices, you look up the number present in that index from the list of numbers. You append this number to a new, third list. What is the resulting list?
+
+# math_for 16
+Given a list of numbers [1, 2, -2, -8, 0], you start at the beginning of the list and access every alternate number. For each of the numbers you access, you subtract one from it and append the result to a new list. What is the new list?
+
+# math_for 17
+You are provided a list of numbers [4, 5, 3, 8, 3, 2, 5]. You calculate the integer part of the quotient obtained when the length of the list is divided by 2. Starting from 0, you access indices from the list one by one up to the quotient you calculated (inclusive). For each index you access, you find the number at that index, and cumulatively sum them up. What is the resulting value?
+
+# math_for 18
+Alice shares with you a positive integer 3 and the initial value of 0. Starting from Alice's integer and counting down till 0, you calculate the square of each number and cumulatively subtract it from the initial value. What result do you get?
+
+# math_if 1
+You are provided the number 1800. If the absolute difference between the number and 1000 is less than or equal to 100, you shout out 1. Otherwise, if the absolute difference between the number and 2000 is less than or equal to 100, you still shout 1. For all other cases, you shout 0. What do you shout?
+
+# math_if 2
+You measure the heights of your three children, which are 3, 3, and 3 feet. You note down the sum of their heights. Only if the heights of the children are all equal, you update your note by multiplying the sum of their heights by 3. What does your note read eventually?
+
+# math_if 3
+You are provided with three numbers 3, 2, and 2. If the first number equals the second, or if the second equals the third, or if the third equals the first, you write out 0 on a chalkboard. In all other cases, you write out the sum of the three numbers on the chalkboard. What will the chalkboard read?
+
+# math_if 4
+Charlie borrows $10 from Alice and $6 from Bob. If the sum of the amounts he borrows is between 15 and 19 (inclusive), he returns $20 to each of them. Otherwise, he returns the sum of the amounts to each of them. How many dollars does he return to each of them?
+
+# math_if 5
+You set up an experiment to calculate the length of a molecule. You know the actual length is 11 units, and obtain a predicted length of 13 units. You allow an error of 2 units. If the difference between the predicted and actual length or the difference between the actual and predicted length is strictly less than the allowed error, you report the sum of the error and the difference between predicted and the actual length. Otherwise, you report the difference between the difference between predicted and the actual length, and the error. What will you report?
+
+# math_if 6
+You are given two numbers 64 and 16. If the remainder when the first number is divided by the second number is 0, you perform one good deed. Otherwise, you perform no good deeds. How many good deeds will you perform?
+
+# math_if 7
+Alice, Bob, and Charlie have 5, 3, and 2 toys respectively. If Alice has more toys than Bob, while Charlie has more toys than Alice, you buy as many toys as Alice has. Otherwise, if Alice has more toys than Charlie, while Bob has more toys than Alice, you buy as many toys as Alice has. Otherwise, if Bob has more toys than Charlie, while Alice has more toys than Bob, then you buy as many toys as Bob has. Otherwise, if Bob has more toys than Alice, while Charlie has more toys than Bob, you buy as many toys as Bob has. In all other cases, you buy as many toys as Charlie has. How many toys will you buy?
+
+# math_if 8
+The year is 2018. If the number is divisible by 400, you shout "A". Else, if it is divisible by 100, you shout "B". Else, if it is divisible by 4, you shout "C". Otherwise, you shout "D". What will you shout?
+
+# math_if 9
+Alice's dog is 12 years old. If a dog is less than or equal to two years, its equivalent human age is 10.5 times its age. Else, its equivalent human age is 21 added to the product of four and the dog's age minus two. What's Alice's dog's human equivalent age?
+
+# math_if 10
+You are given three boxes containing 10, 12, and 14 chocolates. If the square root of the sum of the three numbers is an integer, then you eat the sum of the three boxes. Otherwise, you eat the sum of the second and the third box. How many chocolates do you eat?
+
+# math_if 11
+You are given the list [123, 32, 43, 10, 0, -2, -59, 12, 0]. You divide the first element of the list by 100 and note the quotient and the remainder. If the quotient is present in the list, then you write out the quotient. Else, if the remainder is present in the list, then you write out the remainder. Else, you divide the first element of the list by 10, and if the quotient is present in the list, then you write out the quotient. What number do you write out?
+
+# math_if 12
+Player A has 10 cards, and player B has 10 cards. If player A has less than 10 cards, you declare "b". Else, if player B has exactly 10 cards, you declare "b". Else, if player B has less than 10 cards, you declare "a". Else, if player A has 10 cards and player B has 10 cards, you declare "tie". What do you declare?
+
+# math_if 13
+You are given three lists: [12, 34, 36, 71, 3, 42], [53, 23, 16, 24, 5, 15], and [1, 34, 10, 91, 43, 26]. You think of a random number: 34. If the number exists in the first list or is present in both, the second and third lists, you write down the first number in the first list. Else, if the number is in the second list, or is present in both, the third and first lists, you write out the first number of the second list. Else, if the number is in the third list or is present in both, the first and second lists, you write out the first number of the third list. What number do you write out?
+
+# math_if 14
+You set up an experiment to calculate the length of a molecule. You know the actual length is 10 units and obtain a predicted length of 8 units. You allow an error of 3 units. If the difference between the predicted and actual length is less than the allowed error and greater than negative 1 multiplied by the allowed error, you report the difference between the predicted and actual length. Otherwise, you simply report the allowed error. What will you report?
+
+# math_if 15
+Apples cost $3, and oranges cost $8. If the cost of apples equals that of oranges, you write down the sum of their costs. Else, if the absolute difference between the costs of apples and oranges equals $5, or if the sum of their costs is $5, you write down the product of their costs. Else, you write down the difference between the costs of apples and oranges. What do you write down?
+
+# math_if 16
+The temperature outside is 70 degrees. The humidity is 100%. If the temperature is greater than or equal to 100 degrees, you say "A". Else, if the temperature is greater than or equal to 92 and the humidity is greater than 75, you say "B". Else, if the temperature is greater than 88 and the humidity is greater than or equal to 85, you say "C". Else, if the temperature equals 75 and the humidity is less than or equal to 65, you say "D". Else, you say "E". What do you say?
+
+# math_if 17
+The three sides of a box measure 12, 14, and 124 units respectively. If the first side equals the second, and the second equals the third, you write down 1. Else, if the first side equals the second, or the second equals the third, or if the first equals the third, you write down 2. Else, you write down 3. What do you write down?
+
+# math_if 18
+A zoo has 10 bears, 4 dogs, and 16 wolves. If there are more bears than dogs, and more bears than wolves, the zoo acquires as many horses as wolves. Else, if there are more dogs than bears and more dogs than wolves, then the zoo acquires as many horses as bears. Else, if there are more wolves than bears, and more wolves than dogs, then the zoo acquires as many horses as dogs. How many horses does the zoo acquire?
+
+# str_seq 1
+A person's first name is "Fernando" and the last name is "Federiko". What is the result of concatenating the last name and the first, separated by a space?
+
+# str_seq 2
+A file is named "alphabet.java". You split the name at the dot character.What is the last part of resultant split?
+
+# str_seq 3
+You have a list of colors: ["Red", "Green", "White", "Black"]. You write down the first and the last colors in the list as a tuple. What do you write down?
+
+# str_seq 4
+You have a red toy, while she has a green toy. You place your toy in a box, take her toy, and she takes the toy you kept in the box. What colors are your and her toys? (separate the answers with a ,)
+
+# str_seq 5
+A fruit is labeled "banana". You concatenate the last character in the label, with all the characters in the label barring the first and the last character, and then with all the characters till the first character (inclusive) of the label. What is the resulting string?
+
+# str_seq 6
+You are provided the letter "i" to tag. You are provided the word "MIT". You create a banner which concatenates the character "<", and the tag, and the character ">", and the word. What does the banner read?
+
+# str_seq 7
+Alice writes the word "onion" on a whiteboard. On the next line, you write all the characters in the word, starting from the second last character and going till the end of the word. On the next line, you write the word present on the second line 4 times, one next to another. What does the last line read?
+
+# str_seq 8
+Bob writes the word "WEEKEND" on a piece of paper. Right below it, you write down the first four characters of the word in lower case, followed by the fifth character until the end of the word as it is in the original word. What is the resulting word you write?
+
+# str_seq 9
+From the word "python", you create a new word by selecting the first character and capitalizing it. To it, you add all the characters from the second to the second-to-last (inclusive). You then add the second-to-last character of the original word and capitalize it. What is the new word?
+
+# str_seq 10
+You are given a list of food items: ["crab", "lettuce", "carrot"]. In this list, you replace the second word with the concatenation of the third and second word. How many characters does the current second word have in it?
+
+# str_seq 11
+Alice whispers the word "rap". Bob whispers the word "hat". You write down the word Alice whispered as many times as there are characters in Bob's word, one next to another. You concatenate to this the word Bob whispered. What do you write down?
+
+# str_seq 12
+From the word "groceries", you create a new word by selecting the letters appearing between its second and third characters (inclusive). What is the first character of the resulting word?
+
+# str_seq 13
+You have two words: "wine" and "beer" respectively. You create a new word by concatenating three words - the first contains all characters of the first word until the second character. The second is the entire second word. The third contains all characters of the first word until the second character. What is the resulting word?
+
+# str_seq 14
+You are given two words: "rat" and "mouse" respectively. From it you create a new word as follows - you select all the characters starting from the second character of the first word. To it, you append 2 copies of the fourth character of the second word. What is the resulting word?
+
+# str_seq 15
+The word "star" is written on a wall. You concatenate the word with itself and write down the third letter until the fifth letter. What does your word read?
+
+# str_seq 16
+From the word "wow", you create a new word which contains two copies of the word. You then shout out the third and the fourth character of your new word. What do you shout out?
+
+# str_seq 17
+You receive a coded message "he.elk.set.to". You split the message at every occurrence of the character "e" that appears in it. Of the resulting words, what does the last one read?
+
+# str_seq 18
+You have two words: "apple", and "orange". You create a new word by concatenating the first with the second. To this new word, you concatenate the first word. What is the resulting word?
+
+# str_for 1
+You are given the word "cat". You calculate the number of letters in it. You start with a blank sheet of paper. For as many times as the number of letters in the word, you write down the word on the piece of paper, one next to the other. What is finally written on the paper?
+
+# str_for 2
+You are given a sentence "red fox". You have an empty chalkboard in front of you. For each character (space counts as a character) that appears in the sentence, you write the character on the chalkboard, followed by the letter "s", one next to the other. What does the chalkboard finally read?
+
+# str_for 3
+You are given the following list of words: ["PHP", "Code", "Hack"]. For every word in the list, you write down the number of letters in the word, one next to the other. What is finally written down?
+
+# str_for 4
+You are given the following list: ["apple", "carrot", "orange"]. For each word in the list, you clear out and write down, on a whiteboard, the character ">" followed by the word. What finally remains written on the whiteboard?
+
+# str_for 5
+You are given the word "crow" and an empty list. For each position in the word, beginning from the first letter till the second to last letter, you concatenate the letter at the position and the one to its right, and keep adding to a list. What would the list be in the end?
+
+# str_for 6
+You are given two words, "outer" and "the". For each letter in the second word, you write down True if the letter appears in the first word or write down False otherwise. By the end of this exercise, what is the list of words written down?
+
+# str_for 7
+You are given the word "humdrum". For each letter, starting at the first and stopping at the second, you write down as many copies of the letter as its position. Here, the position of the first letter is treated as 0, the second as 1, and so on. What word is formed out of the letters?
+
+# str_for 8
+You have a blank whiteboard in front of you. For each position in the word "set", starting at 2 and ending at 3 (inclusive), you retrieve the letter at the position, append "ab" to it, and append this concatenated string to whatever word is written on the whiteboard. You then erase the board and instead write this new concatenated word. At the end of this exercise, what remains written on the board?
+
+# str_for 9
+You are given the words "pigs". For each position starting at the last letter, going down to zero, skipping every other letter, you write down the character that appears at that position, side by side. What is the word you eventually write down?
+
+# str_for 10
+You have been provided a list of fruits: ["apple", "plum", "fig"]. For each fruit in the list, you cumulatively sum the number of characters in it. What is the total sum?
+
+# str_for 11
+You are given the word "cop". For each letter, starting at the first and stopping at the last, you write down as many copies of the letter as its position.Here, the position of the first letter is treated as 0, the second as 1, and so on. You write down each of these characters one next to another. What word finally is formed out of it?
+
+# str_for 12
+You are given two words, "clover" and "seed". For each position starting from the first, going up until the number of characters present in the second word, you write down the character in the first word at that position. You write down each of these characters one next to another. What word do you get?
+
+# str_for 13
+You are given the word "hello". For each character in the given word, you write down two copies of the character. You write down each of these characters one next to another. What word finally is formed out of it?
+
+# str_for 14
+You pick the letter "q". You are given the list ["I", "you"]. For each index, starting at 1 and going up to as many words there are in the given list, you update the word at that index with the concatenation of the existing word with the letter you picked. What is the modified list of pronouns?
+
+# str_for 15
+You are given the word "babyface". For each index, starting at the first character, and going up to the second (inclusive), you write down the character which is one more than as many characters away from the end of the word. You write down each of these characters one next to another. What word finally is formed out of it?
+
+# str_for 16
+You are given the word "sausage". For each index starting from 0 and going till 2 (inclusive), you write down the character at the position equal to twice the index value. Here, the position of the first letter is treated as 0, the second as 1, and so on. What word do you get?
+
+# str_for 17
+You are given two words, "gab" and "cab". For each index within the first word, you write down True if the character at the current index of the first word equals the character at the current index of the second word. Otherwise you write down False. You write your results down as a list. What does this list read?
+
+# str_for 18
+You are given a list of three names: ["An", "May", "John"]. For each name on the list, you write down the second character of the name. You write down each of these characters one next to another. What word finally is formed out of it?
+
+# str_if 1
+You are given the word "Array". If the characters until the first letter (inclusive) read "ra", you return the given word. Else, you return the concatenation of the word "ra" and the given word. What word would you return?
+
+# str_if 2
+You are given the word "stuff" and a threshold of 2. If the number of letters in the given word is less than 2, you update the threshold to the number of letters in the given word. You create a new word by selecting characters from the given word, starting from the first letter until the threshold value. What is the resulting word?
+
+# str_if 3
+You analyze the word "characteristic". If its length is less than or equal to 6 characters, you write out the word. Else, you write out the word starting from the first character and ending at the third (inclusive). What do you write out?
+
+# str_if 4
+You are given the word "resource". If it has fewer than two characters, you write down "--". Otherwise, you write down the first character until the second (inclusive), concatenated with the second from the last until the last character (inclusive). What do you write down?
+
+# str_if 5
+You are given the word "interesting". If the word formed by the third character from the end until the end reads "ing", you concatenate "ly" to the word. Else, you concatenate "ing" to the word. What does the resulting word read?
+
+# str_if 6
+You are given the word "program". If it contains less than or equal to 3 characters, then you print out the given word.Else, you print out the characters from the beginning until the third letter of the word. What do you print out?
+
+# str_if 7
+You are given the URL "https://www.mit.edu/bcs". If the first character of the URL is an 'h' and the last character is a '/', then you write down the second character of the URL. Else, if the first character of the URL is an 'h', you write down the last character of the URL. Else, you write down the entire URL. What do you write down?
+
+# str_if 8
+You are given the word "popcorn". If the number of characters in it is divisible by 4, you write down the given word. Else, starting from the last character, you write down the word in reverse. What do you write down?
+
+# str_if 9
+You are given two words, "crybaby" and "crx" respectively. If the characters in the first word, starting from the first until as many as the length of the second word, reads the same as the second word, you shout "1". Else, you shout "Nothing". What do you shout?
+
+# str_if 10
+Given the word "aardvark", you create another word by selecting the first two characters from the word. If the first character in the new word is the same as the second character in the new word, you write down the original word given to you. Else, you write down the new word. What do you write down?
+
+# str_if 11
+You write down a list on the whiteboard: ["hey", "me", "too"]. If the number of characters in the third word is less than 2, you erase the whole list and write down "ab". If not, you keep the list. What is written on the whiteboard?
+
+# str_if 12
+You are given the following list: ["a", "e", "t", "o", "u"]. You are also given the word "CreepyNuts". If the second character of the given word appears in the list, and if the seventh characters appears in the list, you write down 0. Else, if the second character appears in the list, or the seventh character appears in the list, you write down 1. Otherwise, you write down 2. What do you eventually write down?
+
+# str_if 13
+You are given two words: "eat" and "ear". If the first character of the first word is the same as the first character of the second word, while the third character of the first word is the same as the third character of the second word, you print out 0. Else, if the first character of the first word is the same as the first character of the second word, while the second character of the first word is the same as the second character of the second word, you print out 1. Otherwise, you print out 2. What do you print out?
+
+# str_if 14
+You are provided the sentence "I am a" and a word "cat". If the number of letters in the word is greater than 3, you write down the word. Else, if the last letter of the sentence is the same as the second letter of the word, you write down the sentence. Otherwise, you write down the concatenation of the sentence, a space, and the word. What do you write down?
+
+# str_if 15
+You are given three words: "Gauss", "art", and "science". If the word formed by selecting the second through the third character in the first word appears in the second word, you shout out 1. Else, if the last character of the first word appears in the third word, you shout out 2. Otherwise, you shout out 0. What do you shout out?
+
+# str_if 16
+You are given two words: "middle" and "football". If the first word appears in the second word, you print out 1. Else, if the number of characters in the first word is greater than the number of characters in the second word, you print out 2. Otherwise, you print out 3. What do you print out?
+
+# str_if 17
+You are given the word "coyote". You create a new word by selecting the fourth through the sixth letter (inclusive). If twice the number of letters in the new word is greater than the number of letters in the given word, you print out the new word. Else, you print out the original word. What do you eventually print out?
+
+# str_if 18
+You are given a book whose title is "anemone". If the third character of the title is the same as the last character of the title, and if the second character of the title is the same as the character that appears third from the end, you shout out 1. Else, if the third character of the title is the same as the last character of the title, you shout out 2. In all other cases, you shout out 3. What do you shout out?

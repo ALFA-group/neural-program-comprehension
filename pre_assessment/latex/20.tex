@@ -1,0 +1,12 @@
+\question
+\renewcommand{\filename}{20} 
+You write a script \texttt{fib.py} in which you have to make two calls to the function \texttt{fib}. Expecting it to take too long, you decide to write \texttt{fib\_parallel.py}.
+If $X$ is the time taken by \texttt{fib.py} to run, and $Y$ is the time taken by \texttt{fib\_parallel.py}, you find $X$ is consistently less than $Y$. Fix \texttt{fib\_parallel.py} so that $Y<X$. The method \texttt{fib\_parallel.py} has no compile-time or syntax errors in it, and implements threading correctly.
+\noindent
+\pythonexternalnoframe{codes/\filename b.py}
+\begin{minipage}{.55\textwidth}
+	\pythonexternallines{codes/\filename a.py}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+	{\phantom{\pythonexternalnoframe{codes/\filename a.py}}}
+\end{minipage}

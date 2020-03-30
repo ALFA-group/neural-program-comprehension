@@ -1,0 +1,2 @@
+You are given a book whose title is "anemone". If the third character of the title is the same as the last character of the title, and if the second character of the title is the same as the character that appears third from the end, you shout out 1. Else, if the third character of the title is the same as the last character of the title, you shout out 2. In all other cases, you shout out 3. What do you shout out?
+

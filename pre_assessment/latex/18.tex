@@ -1,0 +1,15 @@
+\question
+\renewcommand{\filename}{18} 
+Bob writes a class to check if he's able to control the visibility of a list of secrets defined in a parent class. He defines one class \texttt{F} and inherits it in classes \texttt{F\_some} - which explicitly accesses the secret, and \texttt{F\_none} - which does not.
+Unfortunately, in his implementation, he finds that the inherited class \texttt{F\_none} is able to access this secret! This is the output on running the code 
+
+\pythonexternalnoframe{codes/\filename b.py}
+
+Help Bob fix the inheritance so that \texttt{F\_none} is not able to access the secret. Do not change the implementation of class \texttt{F}.
+
+\begin{minipage}{.55\textwidth}
+	\pythonexternallines{codes/\filename a.py}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+	{\phantom{\pythonexternalnoframe{codes/\filename a.py}}}
+\end{minipage}

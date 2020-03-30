@@ -1,0 +1,2 @@
+You have two empty slots A and B to store balls. You add 4 balls to slot A. In B, you add the same number of balls as A and then add 5 more balls 5 times. You then remove 10 balls from slot B. You empty slot A and add one ball to it. Next, from B, you remove the number of balls present in A. Lastly, you then remove all the balls from slot B and add back the integer part of the quotient obtained when the number of balls that was present in slot B is divided by 3. What is the total number of balls in slot B?
+

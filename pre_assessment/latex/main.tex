@@ -1,0 +1,210 @@
+\documentclass[letterpaper,12pt,addpoints]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{fancyvrb}
+
+\usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
+\usepackage{amsmath,amssymb}
+\setlength\FrameSep{4pt}
+\newcommand{\university}{Massachussets Institute of Technology}
+\newcommand{\faculty}{~}
+\newcommand{\class}{Neuroscience of programming~}
+\newcommand{\examnum}{Python fluency test}
+\newcommand{\examdate}{~}
+\newcommand{\content}{\textbf{Contact}: Anna Ivanova (annaiv@mit.edu), Shash Srikant (shash@mit.edu)}
+\newcommand{\contact}{}
+\newcommand{\timelimit}{60 minutes}
+\newcommand{\filename}{0}
+
+\usepackage{listings}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+		language=Python,
+		basicstyle=\ttm,
+		breaklines=true,
+		postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+		otherkeywords={self},             % Add keywords here
+		keywordstyle=\ttb\color{deepblue},
+		emph={MyClass,__init__},          % Custom highlighting
+		emphstyle=\ttb\color{deepred},    % Custom highlighting style
+		stringstyle=\color{deepgreen},
+		frame=tb,                         % Any extra options here
+		showstringspaces=false            % 
+	}}
+	
+
+\newcommand\pythonstylelines{\lstset{
+		language=Python,
+		basicstyle=\ttm,
+		breaklines=true,
+		numbers=left,
+		stepnumber=1,
+		postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+		otherkeywords={self},             % Add keywords here
+		keywordstyle=\ttb\color{deepblue},
+		emph={MyClass,__init__},          % Custom highlighting
+		emphstyle=\ttb\color{deepred},    % Custom highlighting style
+		stringstyle=\color{deepgreen},
+		frame=tb,                         % Any extra options here
+		showstringspaces=false            % 
+	}}
+
+	
+
+\newcommand\pythonstylenoframe{\lstset{
+		language=Python,
+		basicstyle=\ttm,
+		breaklines=true,
+		postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+		otherkeywords={self},             % Add keywords here
+		keywordstyle=\ttb\color{deepblue},
+		emph={MyClass,__init__},          % Custom highlighting
+		emphstyle=\ttb\color{deepred},    % Custom highlighting style
+		stringstyle=\color{deepgreen},
+		%frame=tb,                         % Any extra options here
+		showstringspaces=false            % 
+	}}
+
+	
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+		\pythonstyle
+		\lstinputlisting[#1]{#2}}}
+
+
+\newcommand\pythonexternallines[2][]{{
+		\pythonstylelines
+		\lstinputlisting[#1]{#2}}}
+
+
+\newcommand\pythonexternalnoframe[2][]{{
+		\pythonstylenoframe
+		\lstinputlisting[#1]{#2}}}
+
+\newcommand{\emptybox}[2][\textwidth]{%
+	\begingroup
+	\setlength{\fboxsep}{-\fboxrule}%
+	\centering\noindent\framebox[#1]{\rule{0pt}{#2}}%
+	\endgroup
+}
+
+\pagestyle{headandfoot}
+\firstpageheader{}{}{}
+\firstpagefooter{}{Page \thepage\ of \numpages}{}
+\runningheader{\class}{\examnum}{\examdate}
+\runningheadrule
+\runningfooter{}{Page \thepage\ of \numpages}{}
+
+\begin{document}
+	
+	\title{\Large \textbf{\university\\ \faculty\\
+			\bigskip
+			\class -- \examnum \\ }}
+	\author{\textbf{Contact}: Anna Ivanova (annaiv@mit.edu), Shash Srikant (shash@mit.edu)}
+	\date{\examdate}
+	\maketitle
+	\begin{flushleft}
+		\makebox[12cm]{\textbf{Name}:\ \hrulefill}
+		\medskip \medskip
+		\newline \newline
+		\makebox[12cm]{\textbf{E-mail ID}:\ \hrulefill}
+		\newline *If you have an \texttt{@mit.edu} email ID, please fill in that.
+	\end{flushleft}
+	\noindent \rule{\textwidth}{1pt}
+	
+	\begin{itemize}
+		\item This exam contains \numpages\ pages (including this cover page) and \numquestions\ questions. Unless specified, assume Python version $>$ 3.6.0. We do not however assess knowledge of specific libraries.
+        \item Please answer within the box/space provided. Only those will be considered your final answers.
+		\item There are three types of questions on this test. One, which asks you to write out the expected output of a program. Two, which asks you to fix an error in a program. Three, which asks you to design an algorithm and implement it in Python.
+		\item For questions requiring you to fix the error, 
+        \begin{itemize}
+            \item you do not have to re-write the entire fixed program. Only rewrite lines containing your fixes. 
+            \item there could be multiple ways to answer these questions. Answering any one is fine.
+            \item do not replace the entire code snippet with an alternate approach. Try fixing the provided lines as much as possible.
+        \end{itemize}
+		\item All questions are weighted equally.
+        \item If you're unable to answer any question but have an idea about it, write it down in the box provided. 
+Likewise, if you think any question is ambiguous, write down your concern.
+	\end{itemize}
+
+Good luck and happy Pythoning!
+	
+\clearpage
+\begin{questions}
+	% guess the output items
+    \input{23}
+    \input{24}
+    \input{25}
+    \clearpage
+
+    \input{26}
+    \input{27}
+    \input{28}
+    \clearpage
+
+    \input{1}
+	\input{2}
+	\input{3}
+	\clearpage
+	
+	\input{4}
+	\input{6}
+	%\input{8}
+	%\clearpage
+	
+	%\input{7}	
+	\input{10}
+	\clearpage
+	
+	\input{5}
+	\clearpage
+	
+	\input{9}
+	
+	% debugging items
+	\input{11}
+	\clearpage
+	
+	\input{12}
+	\vspace{3cm}
+	\input{13}
+	\clearpage
+	
+	\input{15}
+	\vspace{0.5cm}
+	\input{16}
+	\clearpage
+	
+	\input{17}
+	\clearpage
+	
+	%\input{18}
+	%\clearpage
+	
+	\input{19}
+	\clearpage
+	
+	%\input{20}
+	%\clearpage
+
+	\input{14}
+	\clearpage
+		
+	% programming items
+	\input{21}
+	\newpage~\newpage
+	%\input{22}
+	
+\end{questions}
+\end{document}
+	

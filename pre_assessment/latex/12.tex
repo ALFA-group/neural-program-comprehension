@@ -1,0 +1,11 @@
+\question
+\renewcommand{\filename}{12} 
+\input{question_debug}
+\noindent
+\pythonexternalnoframe{codes/\filename b.py}
+\begin{minipage}{.45\textwidth}
+	\pythonexternallines{codes/\filename a.py}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+		{\phantom{\pythonexternalnoframe{codes/\filename a.py}}}
+\end{minipage}

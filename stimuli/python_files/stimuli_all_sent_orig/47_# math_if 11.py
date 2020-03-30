@@ -1,0 +1,2 @@
+You are given the list [123, 32, 43, 10, 0, -2, -59, 12, 0]. You divide the first element of the list by 100 and note the quotient and the remainder. If the quotient is present in the list, then you write out the quotient. Else, if the remainder is present in the list, then you write out the remainder. Else, you divide the first element of the list by 10, and if the quotient is present in the list, then you write out the quotient. What number do you write out?
+

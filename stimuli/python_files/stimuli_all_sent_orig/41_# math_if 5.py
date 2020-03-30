@@ -1,0 +1,2 @@
+You set up an experiment to calculate the length of a molecule. You know the actual length is 11 units, and obtain a predicted length of 13 units. You allow an error of 2 units. If the difference between the predicted and actual length or the difference between the actual and predicted length is strictly less than the allowed error, you report the sum of the error and the difference between predicted and the actual length. Otherwise, you report the difference between the difference between predicted and the actual length, and the error. What will you report?
+

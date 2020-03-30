@@ -1,0 +1,2 @@
+A zoo has 10 bears, 4 dogs, and 16 wolves. If there are more bears than dogs, and more bears than wolves, the zoo acquires as many horses as wolves. Else, if there are more dogs than bears and more dogs than wolves, then the zoo acquires as many horses as bears. Else, if there are more wolves than bears, and more wolves than dogs, then the zoo acquires as many horses as dogs. How many horses does the zoo acquire?
+

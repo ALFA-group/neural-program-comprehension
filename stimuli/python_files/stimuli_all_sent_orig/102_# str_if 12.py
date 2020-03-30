@@ -1,0 +1,2 @@
+You are given the following list: ["a", "e", "t", "o", "u"]. You are also given the word "CreepyNuts". If the second character of the given word appears in the list, and if the seventh characters appears in the list, you write down 0. Else, if the second character appears in the list, or the seventh character appears in the list, you write down 1. Otherwise, you write down 2. What do you eventually write down?
+

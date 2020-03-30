@@ -1,0 +1,2 @@
+You are given two words: "eat" and "ear". If the first character of the first word is the same as the first character of the second word, while the third character of the first word is the same as the third character of the second word, you print out 0. Else, if the first character of the first word is the same as the first character of the second word, while the second character of the first word is the same as the second character of the second word, you print out 1. Otherwise, you print out 2. What do you print out?
+
