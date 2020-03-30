@@ -3,8 +3,8 @@ Resources for the paper **Comprehension of computer programs relies primarily on
 
 ## Folder structure
 
-### Stimuli
-## Python
+## Stimuli
+### Python
 All stimuli related to our Python experiments (Experiment 1) are available in `./stimuli/python/`.
 
 We have made available stimuli pertaining to the three conditions we test in our work -
@@ -16,5 +16,5 @@ They have been made available in two formats - CSVs and raw Python scripts, avai
 
 In `./stimuli/python/python_files/`, we have shared three files each containing all the 108 stimuli, and three folders each containing individual files for the 108 stimuli across the three conditions.
 
-## ScratchJr
+### ScratchJr
 All stimuli related to our Python experiments (Experiment 2) are available in `./stimuli/scratchjr/`.
