@@ -1,0 +1,257 @@
+---
+title: "Behavioral data analysis"
+author: "Anna Ivanova"
+date: "6/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lmerTest)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+```
+
+# PYTHON
+
+## Load behavioral data
+
+```{r data, echo=FALSE}
+dat = read.csv("../data/data_beh_Python/behavioral_data_all_Python.csv")
+
+# only leave the first 12 runs (the rest were not included in fMRI analyses)
+dat = dat %>% 
+  filter(RunNum <13) 
+
+# remove responses to certain items in subjects collected on/before 2019/03/14 
+# (led to the removal of 3/72 responses in 7 subjects and 1/72 responses in 1 subject)
+subs_to_filter = c('FED_20190226a_3T2',
+                   'FED_20190226b_3T2',
+                   'FED_20190226c_3T2',
+                   'FED_20190226d_3T2',
+                   'FED_20190306b_3T2',
+                   'FED_20190307a_3T2',
+                   'FED_20190307b_3T2',
+                   'FED_20190313a_3T2',
+                   'FED_20190314a_3T2',
+                   'FED_20190314b_3T2',
+                   'FED_20190314c_3T2')
+items_to_filter = c(10,22,37,55,62,69,74)
+
+# filter 
+dat = dat %>% filter(SubjID != 'FED_20190314c_3T2')
+
+dat = dat %>%
+  filter(!(SubjID %in% subs_to_filter & ItemNum %in% items_to_filter & LangType == 'sent'))
+
+# modify
+dat = dat %>%
+  mutate(MathStr = ifelse(dat$ItemType %in% c(1,2,3), 'math', 'string')) %>%
+  mutate(SeqForIf = ifelse(dat$ItemType %in% c(1,4), 'seq', 
+                           ifelse(dat$ItemType %in% c(2,5), 'for', 'if')))
+dat$SeqForIf = factor(dat$SeqForIf, levels=c('seq','for','if'))
+dat = dat %>%
+  mutate(LangType = recode(LangType, 'en'='CP_en', 'jap' = 'CP_jap', 'sent'='SP'))
+dat$LangType = factor(dat$LangType)
+```
+
+## RT
+
+### Stats
+
+```{r general info}
+# exclude 2 first runs where participants did not switch to response screen
+dat_RT = dat %>%
+  filter(!(SubjID=='FED_20190215a_3T2' & RunNum=='1')) %>%
+  filter(!(SubjID=='FED_20190321a_3T2' & RunNum=='1'))
+
+cat('Overall:', mean(dat_RT$RT), ' (SD =', sd(dat_RT$RT), ')\n')
+dat_RT.en = dat_RT %>% filter(LangType=='CP_en')
+cat('En:', mean(dat_RT.en$RT), ' (SD =', sd(dat_RT.en$RT), ')\n')
+dat_RT.jap = dat %>% filter(LangType=='CP_jap')
+cat('Jap:', mean(dat_RT.jap$RT), ' (SD =', sd(dat_RT.jap$RT), ')\n')
+dat_RT.sent = dat %>% filter(LangType=='SP')
+cat('Sent:', mean(dat_RT.sent$RT), ' (SD =', sd(dat_RT.sent$RT), ')\n\n\n')
+
+m = lmer(RT ~ LangType*MathStr*SeqForIf + (1 |SubjID) + (1|ItemNum), data=dat_RT, REML=FALSE)
+summary(m)
+```
+
+### Plots
+
+```{r plot RT}
+e1_RT = ggplot(data=dat_RT)+
+    stat_summary(mapping = aes(x = LangType, y = RT, fill=SeqForIf), 
+               geom = 'col', fun.y = 'mean', position='dodge',
+               show.legend = FALSE)+
+    stat_summary(mapping = aes(x = LangType, y = RT, group=SeqForIf), 
+               geom = 'errorbar', fun.data = 'mean_se', color = 'black', 
+               position=position_dodge(.9), size = 1, width=0.3) + 
+  labs(x=NULL, fill=NULL)+
+  theme_classic()+theme(legend.position='top')
+e1_RT
+```
+
+## Accuracy
+
+### Stats
+
+```{r lmer model accuracy}
+
+# exclude 1st participant - bug
+dat_acc = dat %>%
+  filter(!(SubjID=='FED_20190215a_3T2')) 
+cat('Response Rate: ', length(dat_acc$RT[dat_acc$Response>0]) / length(dat_acc$RT), '\n')
+
+dat_acc = dat_acc %>% filter(Response>0)
+
+cat('Overall Accuracy: ', mean(dat_acc$Accuracy), '\n')
+dat_acc.en = dat_acc %>% filter(LangType=='CP_en')
+cat('En: ', mean(dat_acc.en$Accuracy), '\n')
+dat_acc.jap = dat_acc %>% filter(LangType=='CP_jap')
+cat('Jap: ', mean(dat_acc.jap$Accuracy), '\n')
+dat_acc.sent = dat_acc %>% filter(LangType=='SP')
+cat('Sent: ', mean(dat_acc.sent$Accuracy), '\n\n')
+
+m = glmer(Accuracy ~ LangType*MathStr*SeqForIf + (1 |SubjID) + (1|ItemNum), data=dat_acc, nAGQ=0, family='binomial')
+summary(m)
+```
+
+### Plots
+
+```{r plot RT}
+e1_acc = ggplot(data=dat_acc)+
+    stat_summary(mapping = aes(x = LangType, y = Accuracy, fill=SeqForIf), 
+               geom = 'col', fun.y = 'mean', position='dodge')+
+    stat_summary(mapping = aes(x = LangType, y = Accuracy, group=SeqForIf), 
+               geom = 'errorbar', fun.data = 'mean_se', color = 'black', 
+               position=position_dodge(.9), size = 1, width=0.3) + 
+    labs(Fill=NULL, x=NULL)+
+    theme_classic()+theme(legend.position='top')
+e1_acc
+```
+
+
+```{r indiv acc, echo=FALSE}
+acc_by_participant = dat_acc %>% group_by(SubjID) %>% summarize(Accuracy = mean(Accuracy))
+e1_acc_hist = ggplot(data=acc_by_participant, mapping=aes(x=Accuracy)) +
+  geom_histogram(binwidth=0.04)+
+  coord_cartesian(xlim=c(0.1,1))+
+  geom_vline(xintercept = 0.25)+
+  theme_minimal()
+e1_acc_hist
+```
+
+# SCRATCH
+
+```{r load data, echo=FALSE}
+files = list.files(path='../data/data_beh_ScratchJr', pattern="*.csv")
+dat = do.call(rbind, 
+              lapply(files, function(x) 
+                read.csv(paste('../data/data_beh_ScratchJr/', 
+                               x, sep=''))[2:7,c('LIST','Item_total','Condition','Match','RUN', 'trials.thisTrialN', 'vid_dur','match_response.keys','match_response.rt','participant')]))
+
+# clean
+dat$participant[dat$participant=="FED_20180328b_3T2"]="FED_20190328b_3T2"
+names(dat)[names(dat)=="match_response.rt"] = "RT"
+
+# exclude some participants based on fMRI data
+dat = dat %>% filter(!(participant %in% c('FED_20190320b_3T2', 'FED_20190411d_3T2')))
+
+# adjust responses
+dat$Match[dat$Item_total==18 & dat$Condition=='verbal'] = 'mismatch'
+dat$Match[dat$Item_total==23 & dat$Condition=='verbal'] = 'match'
+
+# calculate accuracy
+dat = dat %>% 
+  mutate(RT = RT - vid_dur) %>%
+  mutate(Accuracy = ifelse((match_response.keys == 1 & Match == 'match'), 
+                                       1,
+                                       ifelse((match_response.keys == 2 & Match == 'mismatch'),
+                                       1,0))) 
+
+# remove extra run from one of the participants
+dat = dat %>% filter(!(participant=='FED_20190306a_3T2' & LIST==2))
+```
+
+## Stats
+```{r RT stats, echo=FALSE}
+
+dat_RT = dat %>% filter(!is.na(RT)) 
+dat_RT.verbal = dat_RT %>% filter(Condition=='verbal')
+dat_RT.code = dat_RT %>% filter(Condition=='code')
+cat('Response rate: ', nrow(dat %>% filter(!is.na(RT))) / length(dat$Condition))
+
+cat('\nVerbal RT:', mean(dat_RT.verbal$RT), ' (SD =', sd(dat_RT.verbal$RT), ')\n')
+cat('Code RT:', mean(dat_RT.code$RT), ' (SD =', sd(dat_RT.code$RT), ')\n')
+
+# Accuracy
+
+dat_acc = dat %>% filter(!(Item_total %in% c(4,5,6,8,9,11,12,13,16) & Match=='match'))
+dat_acc.verbal = dat_acc %>% filter(Condition=='verbal')
+dat_acc.code = dat_acc %>% filter(Condition=='code')
+
+cat('Verbal Accuracy:', mean(dat_acc.verbal$Accuracy), '\n')
+cat('Code Accuracy:', mean(dat_acc.code$Accuracy), '\n\n\n')
+
+m = lmer(RT ~ Condition + (1 |participant) + (1|Item_total), data=dat_RT, REML=FALSE,
+         control = lmerControl(optimizer ="Nelder_Mead"))
+summary(m)
+cat('\n')
+
+m = glmer(Accuracy ~ Condition + (1 |participant) + (1|Item_total), data=dat_acc, family='binomial',
+          control = glmerControl(optimizer ="Nelder_Mead"))
+summary(m)
+```
+
+## Plots
+
+```{r plots}
+dat_RT = dat_RT %>% mutate(Condition = recode(Condition, 'code'='CP', 'verbal'='SP'))
+dat_acc = dat_acc %>% mutate(Condition = recode(Condition, 'code'='CP', 'verbal'='SP'))
+
+e2_RT = ggplot(data=dat_RT)+
+    stat_summary(mapping = aes(x = Condition, y = RT), 
+               geom = 'col', fun.y = 'mean', position = 'dodge', fill='goldenrod1')+
+    stat_summary(mapping = aes(x = Condition, y = RT), 
+               geom = 'errorbar', fun.data = 'mean_se', color = 'black', 
+               position = position_dodge(width=0.9), size = 1, width=0.3)+
+  labs(x=NULL)+
+    theme_classic()
+
+e2_acc = ggplot(data=dat_acc)+
+    stat_summary(mapping = aes(x = Condition, y = Accuracy), 
+               geom = 'col', fun.y = 'mean', position = 'dodge', fill='goldenrod1')+
+    stat_summary(mapping = aes(x = Condition, y = Accuracy), 
+               geom = 'errorbar', fun.data = 'mean_se', color = 'black', 
+               position = position_dodge(width=0.9), size = 1, width=0.3)+
+    coord_cartesian(ylim=c(0,1))+
+    labs(x=NULL)+
+    theme_classic()
+e2_RT
+e2_acc
+```
+
+```{r indiv acc Scratch, echo=FALSE}
+acc_by_participant = dat_acc %>% filter(!is.na(RT)) %>% 
+  group_by(participant) %>% summarize(Accuracy = mean(Accuracy))
+e2_acc_hist = ggplot(data=acc_by_participant, mapping=aes(x=Accuracy)) +
+  geom_histogram(binwidth=0.04)+
+  coord_cartesian(xlim=c(0.1,1))+
+  geom_vline(xintercept = 0.5)+
+  theme_minimal()
+e2_acc_hist
+```
+
+# COMBINE
+
+```{r combine all, echo=FALSE}
+(e1_acc | e2_acc | plot_layout(widths=c(1,0.5))) /
+  (e1_RT | e2_RT | plot_layout(widths=c(1,0.5))) /
+  plot_spacer() /
+  (e1_acc_hist | plot_spacer() | e2_acc_hist | plot_layout(widths=c(1,0.2,1))) /
+  plot_layout(heights=c(1,1,0.1,1))
+
+ggsave('plots/beh_data.png', width=20, height=15,units='cm')
+```

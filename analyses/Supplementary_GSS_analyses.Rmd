@@ -1,0 +1,299 @@
+---
+title: "brainCode GSS analyses"
+author: "Anna Ivanova"
+date: "3/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+rm(list = ls()) 
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(lme4)
+library(lmerTest)
+```
+
+# EXPT1: PYTHON
+
+## Code > Sent
+
+```{r load python data, echo=FALSE}
+# load data
+dat.brainCode <- read.csv("../data/data_GSS/brainCode_brainCode.csv")
+dat.lang <- read.csv("../data/data_GSS/brainCode_langlocSN.csv")
+dat.MD <-read.csv("../data/data_GSS/brainCode_MDloc.csv")
+
+#combine
+dat <- rbind(dat.brainCode,dat.lang,dat.MD)
+
+# merge en and jap into code
+dat.newrows = dat %>% 
+  filter(Effect %in% c('en', 'jap')) %>%
+  group_by(ROI, Subject, LocalizerSize) %>% 
+  summarize(EffectSize=mean(EffectSize)) %>%
+  mutate(Effect='code')
+dat.newrows = dat.newrows[c(1,2,5,3,4)]
+
+dat = bind_rows(dat, dat.newrows)
+dat = dat %>% filter(!Effect %in% c('en', 'jap'))
+
+#filter
+dat = dat %>% filter(dat$ROI < 24 | dat$ROI %in% c(25,27,28,29)) 
+dat$ROI = factor(dat$ROI)
+
+dat = dat %>% mutate(Effect = recode(Effect, 
+                                     'code'='CP', 'sent'='SP',
+                                     'H'='HardWM', 'E'='EasyWM',
+                                     'S'='SR', 'N'='NR'))
+dat$Effect = factor(dat$Effect, levels=c('CP','SP','HardWM','EasyWM','SR','NR'))
+```
+
+### Stats
+
+```{r Python stats, echo=FALSE}
+data.model = dat %>% filter(Effect %in% c('CP', 'HardWM', 'EasyWM'))
+data.model$Effect = factor(data.model$Effect, levels=c('CP','HardWM', 'EasyWM'))
+
+contrasts(data.model$Effect) = rbind(c(1,0),
+                                  c(0,0),
+                                  c(0,1))
+colnames(attr(data.model$Effect, 'contrasts')) = c('code-HE', 'E-H')
+contrasts(data.model$Effect)
+
+# test effect in individual ROIs - uncorrected here!
+
+for (i in unique(dat$ROI)) {
+  print(i)
+  data.roi = data.model %>% filter(ROI==i)
+  model = lmer(EffectSize ~ Effect + (1|Subject), data=data.roi, REML=FALSE)
+  print(sprintf('Code > H: beta = %.2f, p = %.3f', summary(model)$coefficients[2], summary(model)$coefficients[,"Pr(>|t|)"][2]*length(unique(dat$ROI))))
+  print(sprintf('H > E: beta = %.2f, p = %.3f', summary(model)$coefficients[3], summary(model)$coefficients[,"Pr(>|t|)"][3]*length(unique(dat$ROI))))
+}
+```
+
+### Plots
+
+```{r python plot, echo=FALSE}
+ROIs1 = c('1','2','3','4','5','6','7','8','9','10')
+ROIs2 = c('11','12','13','14','15','16','17','18','19','20')
+ROIs3 = c('21','22','23','24','25','26','27','28','29','30')
+
+ggplot(dat %>% filter(dat$ROI %in% ROIs1))+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group=Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title='GSS code problems > sentence problems', fill=NULL)+
+  #labs(title=NULL, fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14), 
+        axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='top', legend.text = element_text(size=12), 
+        plot.title = element_text(size=20, hjust = 0.5, face="bold"))+
+  guides(fill=guide_legend(nrow=1))
+
+ggsave('plots/GSS Python code>H 1.png', width=30, height=10, units="cm")
+
+ggplot(dat %>% filter(dat$ROI %in% ROIs2))+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group=Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title=NULL, fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14), 
+        axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='none', legend.text = element_text(size=12), 
+        plot.title = element_text(size=20, hjust = 0.5, face="bold"))+
+  guides(fill=guide_legend(nrow=1))
+
+ggsave('plots/GSS Python code>H 2.png', width=30, height=10, units="cm")
+
+ggplot(dat %>% filter(dat$ROI %in% ROIs3))+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group=Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title=NULL, fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14), 
+        axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='none', legend.text = element_text(size=12), 
+        plot.title = element_text(size=20, hjust = 0.5, face="bold"))+
+  guides(fill=guide_legend(nrow=1))
+
+ggsave('plots/GSS Python code>H 3.png', width=30, height=10, units="cm")
+```
+
+## Code > Sent and not H>E
+
+```{r load Python conj data, echo=FALSE}
+# load data
+dat.brainCode <- read.csv("../data/data_GSS/brainCode_conj_brainCode.csv")
+dat.lang <- read.csv("../data/data_GSS/brainCode_conj_langlocSN.csv")
+dat.MD <-read.csv("../data/data_GSS/brainCode_conj_MDloc.csv")
+
+#combine
+dat <- rbind(dat.brainCode,dat.lang,dat.MD)
+
+# merge en and jap into code
+dat.newrows = dat %>% 
+  filter(Effect %in% c('en', 'jap')) %>%
+  group_by(ROI, Subject, LocalizerSize) %>% 
+  summarize(EffectSize=mean(EffectSize)) %>%
+  mutate(Effect='code')
+dat.newrows = dat.newrows[c(1,2,5,3,4)]
+
+dat = bind_rows(dat, dat.newrows)
+dat = dat %>% filter(!Effect %in% c('en', 'jap'))
+
+#filter
+dat <- dat %>% filter(dat$ROI %in% c(1))    # 70% overlap
+dat$ROI = factor(dat$ROI)
+
+dat$Effect = factor(dat$Effect, levels=c('code','sent','H','E','S','N'))
+dat = dat %>% mutate(Effect = recode(Effect, 
+                                     'code'='CP', 'sent'='SP',
+                                     'H'='HardWM', 'E'='EasyWM',
+                                     'S'='SR', 'N'='NR'))
+```
+
+```{r plot Python conj, echo=FALSE}
+ggplot(dat)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group = Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title='Code>Sent and not H>E', fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='top', legend.text = element_text(size=12), 
+        plot.title = element_text(size=18, hjust = 0.5, face="bold"))+
+  guides(fill=guide_legend(nrow=1))
+
+ggsave('plots/GSS Python code>H and not H>E.png', width=10, height=15, units="cm")
+```
+
+
+# EXPT2: SCRATCH
+
+## Code > Sent
+
+```{r load ScratchJr data, echo=FALSE}
+# load data
+dat.brainCode <- read.csv("../data/data_GSS/ScratchJr_ScratchJr.csv")
+dat.lang <- read.csv("../data/data_GSS/ScratchJr_langlocSN.csv")
+dat.MD <-read.csv("../data/data_GSS/ScratchJr_MDloc.csv")
+
+#combine
+dat = rbind(dat.brainCode,dat.lang,dat.MD)
+
+#filter
+dat = dat %>% 
+  filter(dat$ROI %in% c(1,2,3,4,5,6,7,8,9,10,11,12,13,14)) 
+dat = dat %>%
+  filter(dat$Effect %in% c('crit_CODE', 'crit_VERB', 'N', 'S', 'E', 'H'))
+dat$ROI = factor(dat$ROI)
+
+# clean up
+dat$Effect = factor(dat$Effect, levels=c('crit_CODE','crit_VERB','H','E','S','N'))
+dat = dat %>% mutate(Effect = recode(Effect, 
+                                     'crit_CODE'='CP', 'crit_VERB'='SP',
+                                     'H'='HardWM', 'E'='EasyWM',
+                                     'S'='SR', 'N'='NR'))
+```
+
+### Stats
+
+```{r ScratchJr stats, echo=FALSE}
+data.model = dat %>% filter(Effect %in% c('CP', 'HardWM', 'EasyWM'))
+data.model$Effect = factor(data.model$Effect, levels=c('CP', 'HardWM', 'EasyWM'))
+
+contrasts(data.model$Effect) = rbind(c(1,0),
+                                  c(0,0),
+                                  c(0,1))
+colnames(attr(data.model$Effect, 'contrasts')) = c('code-HE', 'E-H')
+contrasts(data.model$Effect)
+
+# test effect in individual ROIs
+
+for (i in 1:14) {
+  print(i)
+  data.roi = data.model %>% filter(ROI==i)
+  model = lmer(EffectSize ~ Effect + (1|Subject), data=data.roi, REML=FALSE)
+  print(sprintf('Code > H: beta = %.2f, p = %.3f', summary(model)$coefficients[2], summary(model)$coefficients[,"Pr(>|t|)"][2]*14))
+  print(sprintf('H > E: beta = %.2f, p = %.3f', summary(model)$coefficients[3], summary(model)$coefficients[,"Pr(>|t|)"][3]*14))
+}
+```
+
+Four ROIs - 1,3,7,8 - exhibit higher responses to code than to the working memory conditions.
+
+### Plots
+
+```{r plot ScratchJr data, echo=FALSE}
+
+ggplot(dat %>% filter(ROI %in% c(1,3,7,8)))+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group = Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title='GSS code problems > sentence problems', fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14), axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='top', legend.text = element_text(size=12), 
+        plot.title = element_text(size=18, hjust = 0.5, face="bold"))
+
+ggsave('plots/GSS ScratchJr code>H.png', width=15, height=10, units="cm")
+
+
+ggplot(dat %>% filter(!ROI %in% c(1,3,7,8)))+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+               geom = 'col', fun.y = 'mean', color = 'black', position='dodge', alpha=0.75)+
+  geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
+             shape=21, size=1.5, alpha=0.4,
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, group = Effect), 
+               geom = 'errorbar', fun.data = 'mean_se',  position=position_dodge(.9), 
+               color = 'black',size = 1, width=0.4)+
+  labs(title='GSS code problems > sentence problems', fill=NULL)+
+  theme_classic()+ 
+  theme(axis.text.x = element_text(size=14), axis.title.x = element_text(size=14), axis.title.y = element_text(size=14), axis.text.y = element_text(size=12),
+        legend.position='top', legend.text = element_text(size=12), 
+        plot.title = element_text(size=18, hjust = 0.5, face="bold"))
+
+ggsave('plots/GSS ScratchJr no code>H.png', width=30, height=10, units="cm")
+```
+
+## Code > Sent and not H > E
+
+Conjunction analysis code > sent and not H>E did not reveal any significant clusters in Expt2
