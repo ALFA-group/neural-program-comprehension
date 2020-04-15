@@ -1,5 +1,12 @@
 # The Neuroscience of Program Comprehension
-Resources for the paper **Comprehension of computer programs relies primarily on domain-general executive resources** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
+Resources for the paper **Comprehension of computer code relies primarily on domain-general executive resources** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope H. Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
+
+The labs involved:
+https://evlab.mit.edu/
+https://sites.tufts.edu/devtech/
+https://alfagroup.csail.mit.edu/
+
+For additional information, contact annaiv@mit.edu or evelina9@mit.edu.
 
 ## Stimuli
 ### Python
@@ -10,9 +17,25 @@ We have made available stimuli pertaining to the three conditions we test in our
 - `SENT`: English descriptions of these codes.
 - `JAP`: Codes with obfuscated variable names.
 
-They have been made available in two formats - CSVs and raw Python scripts, available at `./stimuli/python_files/` and `./stimuli/python/python_files/` respectively.
-
-In `./stimuli/python/python_files/`, we have shared three files each containing all the 108 stimuli, and three folders each containing individual files for the 108 stimuli across the three conditions.
+We have shared three files each containing all the 108 stimuli, as well as three folders each containing individual files for the 108 stimuli across the three conditions.
 
 ### ScratchJr
-All stimuli related to our Python experiments (Experiment 2) are available in `./stimuli/scratchjr/`.
+The stimuli used in the ScratchJr experiment (Experiment 2) are available in `./stimuli/scratchjr/`. Each folder item contains the .png image of the code snippet, two videos (match and mismatch; only one of the videos was shown to each participant), and the audio of the sentence describing the video (the audio was not used for the current experiment).
+
+## Data
+
+We make available the data we used for statistical analyses and plotting:
+- behavioral responses
+- responses to conditions of interest within MD and language fROIs (`data_fROI*`)
+- responses to conditions of interest within parcels defined using the code problems > sentence problems contrast (`data_GSS`)
+- voxelwise spatial correlation between responses in language fROIs (`data_spcorr`)
+
+Original .nii files are available upon request.
+
+## Analyses
+
+We provide the R code that was used for statistical analyses and plot generation. 
+
+## Python proficiency test
+
+For Experiment 1, we developed a custom Python proficiency test (22 short response questions and 1 long response question, intended to be completed within 1 hour). There was no overlap between the proficiency test questions and the questions presented to participants in the scanner. 
