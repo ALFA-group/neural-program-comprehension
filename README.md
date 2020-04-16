@@ -2,8 +2,11 @@
 Resources for the paper **Comprehension of computer code relies primarily on domain-general executive resources** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope H. Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
 
 The labs involved:
+
 https://evlab.mit.edu/
+
 https://sites.tufts.edu/devtech/
+
 https://alfagroup.csail.mit.edu/
 
 For additional information, contact annaiv@mit.edu or evelina9@mit.edu.
