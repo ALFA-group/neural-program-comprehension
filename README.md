@@ -12,7 +12,7 @@ https://alfagroup.csail.mit.edu/
 For additional information, contact annaiv@mit.edu or evelina9@mit.edu.
 
 ## Stimuli
-### Python
+### Python (Experiment 1)
 All stimuli related to our Python experiments (Experiment 1) are available in `./stimuli/python/`.
 
 We have made available stimuli pertaining to the three conditions we test in our work -
@@ -22,8 +22,8 @@ We have made available stimuli pertaining to the three conditions we test in our
 
 We have shared three files each containing all the 108 stimuli, as well as three folders each containing individual files for the 108 stimuli across the three conditions.
 
-### ScratchJr
-The stimuli used in the ScratchJr experiment (Experiment 2) are available in `./stimuli/scratchjr/`. Each folder item contains the .png image of the code snippet, two videos (match and mismatch; only one of the videos was shown to each participant), and the audio of the sentence describing the video (the audio was not used for the current experiment).
+### ScratchJr (Experiment 2)
+The stimuli used in the ScratchJr experiment are available in `./stimuli/scratchjr/`. Each folder item contains the `.png` image of the code snippet, two videos (match and mismatch; only one of the videos was shown to each participant), and the audio of the sentence describing the video (the audio was not used for the current experiment).
 
 ## Data
 
@@ -33,7 +33,7 @@ We make available the data we used for statistical analyses and plotting:
 - responses to conditions of interest within parcels defined using the code problems > sentence problems contrast (`data_GSS`)
 - voxelwise spatial correlation between responses in language fROIs (`data_spcorr`)
 
-Original .nii files are available upon request.
+Original `.nii` files are available upon request.
 
 ## Analyses
 
