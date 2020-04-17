@@ -4,4 +4,6 @@
 
 - One question required algorithm to be designed and implement it in Python.
 
-- Participants were given 1 hour to attempt these questions. 
+- Participants were given 1 hour to attempt these questions.
+
+- `assessment.pdf` was the test we handed out to the participants. `latex/main.tex` has the LaTeX for the questions in the test.
