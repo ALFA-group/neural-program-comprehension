@@ -1,8 +1,8 @@
 - This proficiency test of Python consisted of a total of 23 questions.
 
-- 22 of these were short-response questions. They were in two formats - write out the expected output of a program, and spot and fix an error in a program.
+- 22 of these were short-response questions. They were two formats - write out the expected output of a program, and spot and fix an error in a program.
 
-- One question required algorithm to be designed and implement it in Python.
+- One question required an algorithm to be designed and implement it in Python.
 
 - Participants were given 1 hour to attempt these questions.
 
