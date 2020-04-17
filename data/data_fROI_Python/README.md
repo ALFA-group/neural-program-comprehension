@@ -3,9 +3,9 @@ fROI analysis files are named according to the following convention:
 *localizer task "_" task with effects of interest ".csv"*
 
 **Tasks:**
-- langlocSN: language localizer task (used to define language system fROIs)
-- MDloc: spatial working memory task (used to define MD fROIs)
-- brainCode: Python program comprehension task
+- langlocSN: language localizer task (used to define language system fROIs; S - sentence reading, N - nonword reading)
+- MDloc: spatial working memory task (used to define MD fROIs; E - easy, H - hard)
+- brainCode: Python program comprehension task (en - code problems, English identifiers, jap - code problems, Japanese identifiers, sent - sentence problems)
 
 **fROI data column names:**
 - ROI: region of interest (for number to name conversion, see analysis files)
