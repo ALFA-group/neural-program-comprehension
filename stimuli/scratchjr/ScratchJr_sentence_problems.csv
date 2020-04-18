@@ -1,0 +1,25 @@
+Item_index,Item_label,Sentence
+1,B1,"Kitten yawns, then walks right and up."
+2,B2,"Kitten walks right and up, then disappears into a building."
+3,B3,"Kitten walks left and up, then disappears."
+4,B4,Kitten walks back and forth three times.
+5,B5,Kitten spins upside down.
+6,B6,"Kitten walks right, jumps, then walks left."
+7,B7,"Kitten walks to the right, runs into something and says \ouch!\"
+8,B8,"Kitten moves up and down, then gets bigger and smaller. This happens twice."
+9,I1,"In the classroom, Kitten walks to the right, then enters the library."
+10,I2,The flower grows bigger.
+11,I3,"Kitten, Dragon and Dog are racing, running to the right across the screen. Kitten is the fastest, Dog is next, and Dragon is the slowest."
+12,I4,"You tap the storm cloud and it moves right. Then, you tap Kitten and Kitten moves right."
+13,I5,"You tap a tree and it leans to the right, then to the left and then grows. You tap another tree and it also leans to the right, then to the left and then grows."
+14,I6,"Kitten and Dog, at the same time, get bigger and smaller three times, then jump."
+15,I7,"Kitten and Chicken are racing, running to the right across the screen. Chicken is faster and when Chicken reaches the end of the screen, he says, \I'm faster!\."
+16,I8,"Kitten and Dog, at the same time, disappear and reappear, then jump. This happens twice."
+17,E1,"In the classroom, the teacher introduces herself. Then, Kitten introduces itself."
+18,E2,"Dog walks to the right and bumps into Kitten, which makes Kitten spin in a circle. While Kitten is spinning, Dog walks back to the left."
+19,E3,Kitten walks diagonally toward the lower right corner.
+20,E4,Bunny hops to the right.
+21,E5,"Butterfly flies up and to the right. Then, Kitten jumps toward Butterfly."
+22,E6,"Kitten walks to the right toward the rocket, then gets smaller and disappears over the rocket. The rocket flies away."
+23,E7,Kitten bounces a basketball to the right.
+24,E8,"Dog spins in a circle, then Kitten spins in a circle."
