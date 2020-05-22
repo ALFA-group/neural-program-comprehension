@@ -159,7 +159,8 @@ names(dat)[names(dat)=="match_response.rt"] = "RT"
 # exclude some participants based on fMRI data
 dat = dat %>% filter(!(participant %in% c('FED_20190320b_3T2', 'FED_20190411d_3T2')))
 
-# adjust responses
+# adjust responses (based on a follow-up examination of verbal descriptions)
+dat$Match[dat$Item_total==16 & dat$Condition=='verbal'] = 'mismatch'
 dat$Match[dat$Item_total==18 & dat$Condition=='verbal'] = 'mismatch'
 dat$Match[dat$Item_total==23 & dat$Condition=='verbal'] = 'match'
 
@@ -187,8 +188,8 @@ cat('\nVerbal RT:', mean(dat_RT.verbal$RT), ' (SD =', sd(dat_RT.verbal$RT), ')\n
 cat('Code RT:', mean(dat_RT.code$RT), ' (SD =', sd(dat_RT.code$RT), ')\n')
 
 # Accuracy
-
-dat_acc = dat %>% filter(!(Item_total %in% c(4,5,6,8,9,11,12,13,16) & Match=='match'))
+# Exclude items where >50% participants chose the "wrong" answer for the (easy) verbal description
+dat_acc = dat %>% filter(!(Item_total %in% c(4,5,6,8,9,11,12,13) & Match=='match'))
 dat_acc.verbal = dat_acc %>% filter(Condition=='verbal')
 dat_acc.code = dat_acc %>% filter(Condition=='code')
 
