@@ -11,7 +11,7 @@ https://sites.tufts.edu/devtech/
 
 https://alfagroup.csail.mit.edu/
 
-For additional information, contact annaiv@mit.edu or evelina9@mit.edu.
+For additional information, contact annaiv@mit.edu, shash@mit.edu, or evelina9@mit.edu.
 
 ## Stimuli
 ### Python (Experiment 1)
