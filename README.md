@@ -48,3 +48,9 @@ We make available the brain parcels used to define functional systems of interes
 ## Python proficiency test
 
 For Experiment 1, we developed a custom Python proficiency test (22 short response questions and 1 long response question, intended to be completed within 1 hour). There was no overlap between the proficiency test questions and the questions presented to participants in the scanner. 
+
+## Programming experience survey
+
+Subjects also responded to a survey at the end of their scans. 
+They reported their proficiency and familiarity with a number of programming related topics. 
+`./survey/` has a PDF of these questions.
