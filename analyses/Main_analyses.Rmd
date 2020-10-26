@@ -1,7 +1,7 @@
 ---
 title: "brainCode analyses"
 author: "Anna Ivanova"
-date: "3/22/2020"
+date: "10/25/2020"
 output:
   html_document: default
   pdf_document: default
@@ -57,6 +57,16 @@ dat.langloc <- rbind(dat.langloc.lang, dat.langloc.code)
 dat.langloc <- bind_rows(dat.langloc, dat.langloc.newrows)
 dat.MDloc <- rbind(dat.MDloc.lang, dat.MDloc.code, dat.MDloc.MD)
 dat.MDloc <- bind_rows(dat.MDloc, dat.MDloc.newrows)
+
+# adjust one subject's name
+dat.langloc = dat.langloc %>%
+  mutate(Subject = ifelse((Subject=='732_FED_20190307_3T2_PL2017'), 
+                          '732_FED_20190307a_3T2_PL2017', Subject))
+dat.MDloc = dat.MDloc %>%
+  mutate(Subject = ifelse((Subject=='732_FED_20190307_3T2_PL2017'), 
+                          '732_FED_20190307a_3T2_PL2017', Subject))
+
+# add beh data
 dat.langloc <- merge(dat.langloc, dat.beh, by="Subject")
 dat.MDloc <- merge(dat.MDloc, dat.beh, by="Subject")
 
@@ -67,6 +77,15 @@ dat.MDloc = dat.MDloc %>%
   filter(Subject != '737_FED_20190314c_3T2_PL2017') %>%
   mutate(Hemisphere = ifelse(ROI %in% c('1','2','3','4','5','6','7','8','9','10'), 'L', 'R')) 
 
+# extract localizer size for later
+langloc.locsize = dat.langloc %>% 
+  group_by(ROI, LocalizerSize) %>%
+  summarize()
+MDloc.locsize = dat.MDloc %>% 
+  group_by(ROI, LocalizerSize) %>%
+  summarize()
+
+# label MD ROIs
 dat.MDloc$ROI = factor(dat.MDloc$ROI, levels = c(1,2,3,4,5,6,7,8,9,10,
                                                          11,12,13,14,15,16,17,18,19,20))
 dat.MDloc = dat.MDloc %>%
@@ -91,12 +110,6 @@ dat.MDloc = dat.MDloc %>%
                         '18'='midFrontalOrb',
                         '19'='insula',
                         '20'='medialFrontal'))
-
-
-# extract localizer size for later
-langloc.locsize = dat.langloc %>% 
-  group_by(ROI, LocalizerSize) %>%
-  summarize()
 
 # break down into components of interest
 en_sent.langloc <- dat.langloc %>% filter(Effect %in% c('S', 'N', 'sent', 'code'))
@@ -131,8 +144,12 @@ contrasts(d.MDloc$Effect) = rbind(c(0,-1),
                                   c(-1,0),
                                   c(0,0))
 colnames(attr(d.MDloc$Effect, 'contrasts')) = c('CP-SP', 'CP-NR')
-
 contrasts(d.MDloc$Effect)
+
+d.MDloc$Hemisphere = factor(d.MDloc$Hemisphere, levels=c('L', 'R'))
+contrasts(d.MDloc$Hemisphere) = c(0.5, -0.5)
+colnames(attr(d.MDloc$Hemisphere, 'contrasts')) = 'L>R'
+contrasts(d.MDloc$Hemisphere)
 
 m1 = lmer(EffectSize ~ Effect*Hemisphere + (1 | ROI) + (1 | Subject), data=d.MDloc, REML=FALSE)
 summary(m1)
@@ -203,7 +220,7 @@ e1_md
 
 ### MD by hemisphere
 
-```{r MD en-sent, echo=FALSE}
+```{r MD en-sent  by hemi, echo=FALSE}
 y.weighted <- en_sent.MDloc %>% 
   group_by(Effect, Subject, Hemisphere) %>% 
   summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
@@ -254,52 +271,48 @@ e1_md.rh
 
 ### MD by ROI
 
-```{r plot Md by ROI}
-y.weighted <- en_sent.MDloc %>% 
-  group_by(Effect, Subject, ROI, Hemisphere) %>% 
-  filter(Effect %in% c('code', 'sent')) %>%
-  summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
+```{r plot MD by ROI Python, echo=FALSE}
+data2plot <- en_sent.MDloc %>% filter(Effect %in% c('code', 'sent')) %>%
+  group_by(Hemisphere, Effect) %>%
+  mutate(meanEffectSize=mean(EffectSize))
+data2plot$Effect <- factor(data2plot$Effect, levels =c('sent', 'code'),
+                               labels=c('sentence problems', 'code problems'))
 
-e1_md_ROI.lh = ggplot(data=y.weighted %>% filter(Hemisphere=='L'),
-                      mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect))+
-  stat_summary(geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(geom='point', fun.y='mean', size=2)+
-  stat_summary(geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
+e1_md_ROI.both = ggplot(data=data2plot, mapping=aes(x=ROI, y=EffectSize, fill=Effect))+
+  facet_grid(Effect ~ Hemisphere)+
+  stat_summary(geom='col', fun.y='mean', color='black', position='dodge', alpha=0.85,
+               show.legend = FALSE)+
+  geom_point(shape=21, size=0.75, alpha=0.4, color='black',
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+    stat_summary(geom='errorbar', fun.data='mean_se', color='black', position=position_dodge(.9), size=1, width=0, show.legend=FALSE)+
+  geom_hline(yintercept=0, size=0.5, color='gray40', show.legend=FALSE)+
+  geom_hline(mapping=aes(yintercept=meanEffectSize), 
+               size=2, alpha=0.75, color='gray80', show.legend=FALSE)+
+  geom_hline(mapping=aes(yintercept=meanEffectSize, color=Effect), 
+               size=1, alpha=1, show.legend=FALSE)+
+    scale_color_manual(values=c( 'tomato3', 'darkorchid4'))+
+  scale_fill_manual(values=c( 'tomato3', 'darkorchid4'),
                      labels=c( "sentence problems", "code problems"))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
+  coord_cartesian(ylim=c(-2.5,12))+
+  coord_flip()+
   theme_classic()+
   labs(color=element_blank(), size=element_blank(), x = NULL, y = "BOLD response")+
-  theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
+  theme(axis.title.y = element_text(size=16), axis.title.x = element_blank(),
+        axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), 
+        strip.background.x = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_text(size=12),
         plot.title = element_text(size=18, hjust=0.5,face='bold'),
-        legend.text = element_text(size=12), legend.position='none')
-
-e1_md_ROI.rh = ggplot(data=y.weighted %>% filter(Hemisphere=='R'),
-                      mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect))+
-  stat_summary(geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(geom='point', fun.y='mean', size=2)+
-  stat_summary(geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
-                     labels=c( "sentence problems", "code problems"))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
-  theme_classic()+
-  labs(color=element_blank(), size=element_blank(), x = NULL, y = "BOLD response")+
-  theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
-        plot.title = element_text(size=18, hjust=0.5,face='bold'),
-        legend.text = element_text(size=12), legend.position='none')
-
-e1_md_ROI.lh
-e1_md_ROI.rh
+        legend.text = element_text(size=12), legend.position=c(1,1.2))
+e1_md_ROI.both
 ```
+
+
+
 ## Language stats
 
-```{r language en-sent stats m_old}
+```{r language en-sent stats}
 d.langloc = en_sent.langloc %>%
   filter(Effect %in% c('N', 'sent', 'code'))
 d.langloc$Effect = factor(d.langloc$Effect, levels =c('N', 'sent', 'code'))
@@ -348,31 +361,37 @@ e1_lang
 
 ### Lang by ROI
 
-```{r plot linear model}
-y.weighted <- en_sent.langloc %>% 
-  group_by(Effect, Subject, ROI) %>% 
-  filter(Effect %in% c('code', 'sent')) %>%
-  summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
+```{r Lang by ROI Python, echo=FALSE}
+data2plot <- en_sent.langloc %>% filter(Effect %in% c('code', 'sent')) %>%
+  group_by(Effect) %>%
+  mutate(meanEffectSize=mean(EffectSize))
 
-e1_lang_ROI = ggplot(data=NULL)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-                geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-               geom='point', fun.y='mean', size=2)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-               geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
+e1_lang_ROI = ggplot(data=data2plot,
+                     mapping=aes(x=ROI, y=EffectSize, fill=Effect))+
+  facet_grid(Effect ~ .)+
+  stat_summary(geom='col', fun.y='mean', color='black', position='dodge', alpha=0.85)+
+  geom_point(shape=21, size=0.75, alpha=0.4, color='black',
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+    stat_summary(geom='errorbar', fun.data='mean_se', color='black', position=position_dodge(.9), size=1, width=0)+
+  geom_hline(yintercept=0, size=0.5, color='gray40')+
+    geom_hline(mapping=aes(yintercept=meanEffectSize), 
+               size=2, alpha=0.75, color='gray80')+
+  geom_hline(mapping=aes(yintercept=meanEffectSize, color=Effect), 
+               size=1, alpha=1)+
+    scale_color_manual(values=c( 'tomato3', 'darkorchid4'))+
+  scale_fill_manual(values=c( 'tomato3', 'darkorchid4'),
                      labels=c( "sentence problems", "code problems"))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
+  coord_cartesian(ylim=c(-2.5,12))+
+  coord_flip()+
   theme_classic()+
   labs(color=element_blank(), size=element_blank(), x = NULL, y = "BOLD response")+
   theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
+        axis.title.x = element_blank(), axis.text.x = element_text(size=12), 
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
+        plot.title = element_text(size=18, hjust=0.5,face='bold'),
         legend.text = element_text(size=12), legend.position='none')
 
 e1_lang_ROI
@@ -432,7 +451,7 @@ dat = dat.MDloc %>%
                        ifelse(Effect %in% c('en_for', 'jap_for'), 'for', 'if')))
 
 m.seqforif = lmer(EffectSize ~ Type + (1 | ROI) + (1 | Subject), 
-                  data=dat, REML=FALSE)
+                  data=dat, REML=FALSE, control = lmerControl(optimizer ="Nelder_Mead"))
 summary(m.seqforif)
 ```
 
@@ -471,13 +490,12 @@ e1_md_sfi
 
 ```{r en jap lang stats, echo=FALSE}
 dat = dat.langloc %>%
-  filter(Effect %in% c('en', 'jap')) %>%
-  group_by(Subject, Effect, Japanese) 
+  filter(Effect %in% c('en', 'jap')) 
 
-dat = dat %>% mutate(jap_speaker = if (Japanese>0) "speakers" else "non-speakers")
+dat = dat %>% mutate(jap_speaker = ifelse((Japanese>0), "speakers", "non-speakers"))
 
 m.en_jap = lmer(EffectSize ~ Effect*jap_speaker + (1 | ROI) + (1 | Subject), 
-                  data=dat, REML=FALSE)
+                  data=dat, REML=FALSE, control = lmerControl(optimizer ="Nelder_Mead"))
 summary(m.en_jap)
 ```
 
@@ -518,7 +536,7 @@ e1_enjap
 
 ```{r spcorr, echo=FALSE}
 experiment = 'Python'
-tasks = c('brainCode', 'langlocSN')
+tasks = c('brainCode_original', 'langlocSN')
 dfs = list()
 d=1
 
@@ -528,7 +546,7 @@ for (p in 1:6) {
     for (j in seq_along(tasks)) {
       task1 = tasks[[i]]
       task2 = tasks[[j]]
-      new_filename = paste('../data/data_spcorr/spcorr_', 
+      new_filename = paste('../data/data_spcorr/language_system/spcorr_', 
                            task1, '_', task2, '_langparcel', paste(p), '_', experiment, '.csv', sep='')
       filenames = c(filenames, new_filename)
     }
@@ -569,7 +587,7 @@ plot_data <- function(data, row_order, savefile=FALSE) {
     image_filename = paste('plots/spcorr_langloc_Python_10percent.png', sep='')
     png(image_filename)
   }
-  coul <- colorRampPalette(brewer.pal(8, "OrRd"))(64)
+  coul <- colorRampPalette(brewer.pal(8, "Purples"))(256)
 
   data_matrix = as.matrix(data_wide)
   # collapse across code rows
@@ -578,19 +596,21 @@ plot_data <- function(data, row_order, savefile=FALSE) {
   # collapse across code columns
   data_matrix[,1] = (data_matrix[,1] + data_matrix[,2]) / 2 
   data_matrix = data_matrix[,c(1,3,5,4)]
+  # average across runs
+  data_matrix = (data_matrix + t(data_matrix)) / 2
   
   rownames(data_matrix) = c('CP', 'SP', 'SR', 'NR')
   colnames(data_matrix) = c('CP', 'SP', 'SR', 'NR')
   
   # plot
-  heatmap.2(data_matrix, col = cm.colors(256),
-            cellnote=round(data_matrix,2), notecol='black', notecex=1.5,
-            breaks=seq(0.52, 0.86, length.out = 256+1),
+  heatmap.2(data_matrix, col = coul,
+            cellnote=round(data_matrix,2), notecol='black', notecex=2,
+            breaks=seq(0.4, 1.05, length.out = 256+1),
             Colv=FALSE,
             Rowv=FALSE, 
             srtCol=0, adjCol=c(0.5,0.5),
             sepcolor='darkgray', sepwidth=c(0.005, 0.005), colsep=c(2), rowsep=c(2),
-            dendrogram="col", density.info="none", trace="none")
+            dendrogram="none", density.info="none", trace="none")
     
   if (savefile) {dev.off()}
 }
@@ -625,7 +645,7 @@ dat2plot = dat2plot %>% mutate(Effect = recode(Effect,
 dat2plot$ROI = factor(dat2plot$ROI)
 
 e1_codeWM.LH = ggplot(dat2plot %>% filter(Hemisphere=='L'))+
-  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect), 
+  stat_summary(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
                geom = 'col', fun.y = 'mean', color = 'black', 
                width=0.75, position='dodge', alpha=0.85)+
   geom_point(mapping = aes(x = ROI, y = EffectSize, fill = Effect),
@@ -671,6 +691,8 @@ contrasts(data.model$Effect)
 
 # Contrast effects in each ROI, Bonferroni-corrected
 
+totalCP.SP = 0
+
 for (i in unique(data.model$ROI)) {
   cat(i)
   cat('\n')
@@ -678,8 +700,119 @@ for (i in unique(data.model$ROI)) {
   model = lmer(EffectSize ~ Effect + (1|Subject), data=data.roi, REML=FALSE)
   cat(sprintf('CP > SP: beta = %.2f, p = %.3f\n', summary(model)$coefficients[2], summary(model)$coefficients[,"Pr(>|t|)"][2]*length(unique(data.model$ROI))))
   cat(sprintf('CP > HardWM: beta = %.2f, p = %.3f\n\n', summary(model)$coefficients[3], summary(model)$coefficients[,"Pr(>|t|)"][3]*length(unique(data.model$ROI))))
+  
+  totalCP.SP = totalCP.SP + summary(model)$coefficients[2]
 }
+
+cat('\n\nAverage CP>SP = ', (totalCP.SP / 20))
 ```
+
+### MD spcorr
+
+```{r MD spcorr, echo=FALSE}
+experiment = 'Python'
+tasks = c('brainCode_original', 'langlocSN')
+dfs = list()
+d=1
+
+for (p in 1:20) {
+  filenames = vector()
+  for (i in seq_along(tasks)) {
+    for (j in seq_along(tasks)) {
+      task1 = tasks[[i]]
+      task2 = tasks[[j]]
+      new_filename = paste('../data/data_spcorr/MD_system/spcorr_', 
+                           task1, '_', task2, '_MDparcel', paste(p), '_', experiment, '.csv', sep='')
+      filenames = c(filenames, new_filename)
+    }
+  }
+  data_parcel <- lapply(filenames, read.csv)
+  data_parcel = do.call("rbind", data_parcel)
+  data_parcel['ROI'] = p
+  data_parcel['LocalizerSize'] = MDloc.locsize[2][p,]
+  dfs[[d]] = data_parcel
+  d = d+1
+}
+
+data = do.call("rbind", dfs)
+
+data = data %>% 
+  filter(Subject != '737_FED_20190314c_3T2_PL2017') %>%    # Python
+  filter(!(Subject %in% c('742_FED_20190320b_3T2_PL2017', '758_FED_20190411d_3T2_PL2017')))  #ScratchJr
+```
+
+```{r MD spcorr heatmap, echo=FALSE}
+
+plot_data <- function(data, row_order, image_filename, savefile=FALSE) {
+  # convert to distances
+  data_wide = data %>% 
+    group_by(Effects) %>% 
+    summarize(FisherR = weighted.mean(Fisher.transformed.correlation.coefficients, LocalizerSize)) %>%
+    separate(Effects, c("Effect1", "Effect2"), "/") 
+  
+  data_wide = data_wide %>%
+      mutate(FisherR=fisherz2r(data_wide$FisherR)) 
+  
+  data_wide = pivot_wider(data_wide, names_from=Effect2,values_from=FisherR)
+  rowname_vec = data_wide$Effect1
+  data_wide$Effect1 = NULL
+  
+  # save to file
+  if (savefile) {
+    #image_filename = paste('plots/spcorr_MDloc_Python_10percent.png', sep='')
+    png(image_filename)
+  }
+  coul <- colorRampPalette(brewer.pal(8, "Purples"))(256)
+  
+  data_matrix = as.matrix(data_wide)
+  # collapse across code rows
+  data_matrix[1] = (data_matrix[1] + data_matrix[2]) / 2
+  data_matrix = data_matrix[c(1,3,5,4),]
+  # collapse across code columns
+  data_matrix[,1] = (data_matrix[,1] + data_matrix[,2]) / 2 
+  data_matrix = data_matrix[,c(1,3,5,4)]
+  # average across runs
+  data_matrix = (data_matrix + t(data_matrix)) / 2
+  
+  rownames(data_matrix) = c('CP', 'SP', 'SR', 'NR')
+  colnames(data_matrix) = c('CP', 'SP', 'SR', 'NR')
+  
+  # plot
+  heatmap.2(data_matrix, col = coul,
+            cellnote=round(data_matrix,2), notecol='black', notecex=2,
+            breaks=seq(0.4, 1.05, length.out = 256+1),
+            Colv=FALSE,
+            Rowv=FALSE, 
+            srtCol=0, adjCol=c(0.5,0.5),
+            sepcolor='darkgray', sepwidth=c(0.005, 0.005), colsep=c(2), rowsep=c(2),
+            dendrogram="col", density.info="none", trace="none")
+    
+  if (savefile) {dev.off()}
+}
+
+data.LH = data %>% filter(ROI %in% c(1:10))
+data.RH = data %>% filter(ROI %in% c(11:20))
+plot_data(data.LH, c(4,3,2,1), 
+          image_filename=paste('plots/spcorr_MDloc_LH_Python_10percent.png', sep=''),
+          savefile=TRUE)
+plot_data(data.RH, c(4,3,2,1), 
+          image_filename=paste('plots/spcorr_MDloc_RH_Python_10percent.png', sep=''),
+          savefile=TRUE)
+```
+
+```{r MD spcorr stats, echo=FALSE}
+data = data %>% separate(Effects, c("Effect1", "Effect2"), "/") %>%
+  filter(Effect1 %in% c('en', 'jap')) %>%
+  mutate(Hemisphere = ifelse(ROI %in% c('1','2','3','4','5','6','7','8','9','10'), 'L', 'R')) 
+data$Effect2[data$Effect2 %in% c('en', 'jap')] = 'code' 
+
+data$Effect2 = factor(data$Effect2, levels=c('sent','code','S','N'))
+
+m.spcorr = lmer(Fisher.transformed.correlation.coefficients ~ Effect2*Hemisphere + (1 | ROI) + (1 | Subject), data=data, REML=FALSE)
+summary(m.spcorr)
+```
+
+
 
 ### Individual differences
 
@@ -738,36 +871,6 @@ e1_lang_corr
 cor.test(y.weighted.con$Preassessment, y.weighted.con$EnSentCon)
 ```
 
-
-
-```{r MD spatialWM stats, echo=FALSE}
-data.model = dat2plot %>% filter(Effect %in% c('CP', 'SP', 'HardWM'))
-data.model$Effect = factor(data.model$Effect, levels=c('CP', 'SP', 'HardWM'))
-data.model$ROI <- paste(data.model$Hemisphere,data.model$ROI,sep="")
-
-contrasts(data.model$Effect) = rbind(c(0,0),
-                                  c(-1,0),
-                                  c(0,-1))
-colnames(attr(data.model$Effect, 'contrasts')) = c('CP-SP', 'CP-HardWM')
-contrasts(data.model$Effect)
-
-# Contrast effects in each ROI, Bonferroni-corrected
-
-total_beta_CPSP = 0
-
-for (i in unique(data.model$ROI)) {
-  cat(i)
-  cat('\n')
-  data.roi = data.model %>% filter(ROI==i)
-  model = lmer(EffectSize ~ Effect + (1|Subject), data=data.roi, REML=FALSE)
-  #print(summary(model)$coefficients)
-  cat(sprintf('CP > SP: beta = %.2f, p = %.3f\n', summary(model)$coefficients[2], summary(model)$coefficients[,"Pr(>|t|)"][2]*length(unique(data.model$ROI))))
-  cat(sprintf('CP > HardWM: beta = %.2f, p = %.3f\n\n', summary(model)$coefficients[3], summary(model)$coefficients[,"Pr(>|t|)"][3]*length(unique(data.model$ROI))))
-  total_beta_CPSP = total_beta_CPSP + summary(model)$coefficients[2]
-}
-
-cat(total_beta_CPSP/20)
-```
 
 
 # SCRATCH
@@ -833,7 +936,7 @@ dat.MDloc = dat.MDloc %>%
 
 ### General
 
-```{r MD code-sent stats}
+```{r MD code-sent stats ScratchJr}
 d.MDloc = dat.MDloc %>%
   filter(Effect %in% c('N', 'crit_VERB', 'crit_CODE'))
 d.MDloc$Effect = factor(d.MDloc$Effect, levels =c('N', 'crit_VERB', 'crit_CODE'))
@@ -842,8 +945,12 @@ contrasts(d.MDloc$Effect) = rbind(c(0,-1),
                                   c(-1,0),
                                   c(0,0))
 colnames(attr(d.MDloc$Effect, 'contrasts')) = c('CP-SP', 'CP-NR')
-
 contrasts(d.MDloc$Effect)
+
+d.MDloc$Hemisphere = factor(d.MDloc$Hemisphere, levels=c('L', 'R'))
+contrasts(d.MDloc$Hemisphere) = c(0.5, -0.5)
+colnames(attr(d.MDloc$Hemisphere, 'contrasts')) = 'L>R'
+contrasts(d.MDloc$Hemisphere)
 
 m1 = lmer(EffectSize ~ Effect*Hemisphere + (1 | ROI) + (1 | Subject), data=d.MDloc, REML=FALSE)
 summary(m1)
@@ -851,7 +958,7 @@ summary(m1)
 
 ### By ROI
 
-```{r MD ROI stats Python, echo=FALSE}
+```{r MD ROI stats ScratchJr, echo=FALSE}
 # Contrast effects in each ROI, Bonferroni-corrected
 
 model.dfs <- list()
@@ -968,48 +1075,41 @@ e2_md.rh
 
 ### MD by ROI
 
-```{r plot linear model}
-y.weighted <- dat.MDloc %>% 
-  group_by(Effect, Subject, ROI, Hemisphere) %>% 
+```{r MD by ROI ScratchJr, echo=FALSE}
+data2plot <- dat.MDloc %>% 
   filter(Effect %in% c('crit_CODE', 'crit_VERB')) %>%
-  summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
+  group_by(Hemisphere, Effect) %>%
+  mutate(meanEffectSize=mean(EffectSize))
+data2plot$Effect <- factor(data2plot$Effect, levels =c('crit_VERB', 'crit_CODE'),
+                               labels=c('sentence problems', 'code problems'))
 
-e2_md_ROI.lh = ggplot(data=y.weighted %>% filter(Hemisphere=='L'),
-                      mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect))+
-  stat_summary(geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(geom='point', fun.y='mean', size=2)+
-  stat_summary(geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
-                     labels=c( 'SP', 'CP'))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
+e2_md_ROI.both = ggplot(data=data2plot, mapping=aes(x=ROI, y=EffectSize, fill=Effect))+
+  facet_grid(Effect ~ Hemisphere)+
+  stat_summary(geom='col', fun.y='mean', color='black', position='dodge', alpha=0.85)+
+  geom_point(shape=21, size=0.75, alpha=0.4, color='black',
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+    stat_summary(geom='errorbar', fun.data='mean_se', color='black', position=position_dodge(.9), size=1, width=0)+
+  geom_hline(yintercept=0, size=0.5, color='gray40')+
+    geom_hline(mapping=aes(yintercept=meanEffectSize), 
+               size=2, alpha=0.75, color='gray80')+
+  geom_hline(mapping=aes(yintercept=meanEffectSize, color=Effect), 
+               size=1, alpha=1)+
+    scale_color_manual(values=c( 'tomato3', 'darkorchid4'))+
+  scale_fill_manual(values=c( 'tomato3', 'darkorchid4'),
+                     labels=c( "sentence problems", "code problems"))+
+  coord_cartesian(ylim=c(-2.5,12))+
+  coord_flip()+
   theme_classic()+
-  labs(color=element_blank(), size=element_blank(), x = NULL, y = NULL)+
+  labs(color=element_blank(), size=element_blank(), x = NULL, y = "BOLD response")+
   theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
+        axis.text.x = element_text(size=12), 
+        strip.background.x = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_text(size=12),
         plot.title = element_text(size=18, hjust=0.5,face='bold'),
-        legend.text = element_text(size=16), legend.position=c(0.85,0.9))
-
-e2_md_ROI.rh = ggplot(data=y.weighted %>% filter(Hemisphere=='R'),
-                      mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect))+
-  stat_summary(geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(geom='point', fun.y='mean', size=2)+
-  stat_summary(geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
-                     labels=c('SP', 'CP'))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
-  theme_classic()+
-  labs(color=element_blank(), size=element_blank(), x = NULL, y = NULL)+
-  theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
-        plot.title = element_text(size=18, hjust=0.5,face='bold'),
-        legend.text = element_text(size=16), legend.position=c(0.85,0.9))
-
-e2_md_ROI.lh
-e2_md_ROI.rh
+        legend.text = element_text(size=12), legend.position='none')
+e2_md_ROI.both
 ```
 
 ## Lang stats
@@ -1066,33 +1166,38 @@ e2_lang
 
 ### Lang by ROI
 
-```{r plot linear model}
-y.weighted <- dat.langloc %>% 
-  group_by(Effect, Subject, ROI) %>% 
-  filter(Effect %in% c('crit_CODE', 'crit_VERB')) %>%
-  summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
+```{r lang by ROI ScratchJR, echo=FALSE}
+data2plot <- dat.langloc %>% filter(Effect %in% c('crit_CODE', 'crit_VERB')) %>%
+  group_by(Effect) %>%
+  mutate(meanEffectSize=mean(EffectSize))
 
-e2_lang_ROI = ggplot(data=NULL)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-                geom='errorbar', fun.data='mean_se', size=0.7, width=0.08)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-               geom='point', fun.y='mean', size=2)+
-  stat_summary(data=y.weighted,
-               mapping=aes(x=ROI, y=EffectSize, group=Effect, color=Effect),
-               geom='line', fun.y='mean', size=1)+
-  geom_hline(yintercept=0, size=0.5, color='gray40', linetype='dotted')+
-  scale_color_manual(values=c( 'tomato3', 'darkorchid4'),
-                     labels=c( 'SP', 'CP'))+
-  scale_size_manual(values=c(1.5,1.5,1.5))+
-  coord_cartesian(ylim=c(-0.5,6))+
+e2_lang_ROI = ggplot(data2plot,
+                     mapping=aes(x=ROI, y=EffectSize, fill=Effect))+
+  facet_grid(Effect ~ .)+
+  stat_summary(geom='col', fun.y='mean', color='black', position='dodge', alpha=0.85)+
+  geom_point(shape=21, size=0.75, alpha=0.4, color='black',
+             position=position_jitterdodge(jitter.width=0.15, jitter.height=0, dodge.width=.9),
+             show.legend = FALSE)+
+    stat_summary(geom='errorbar', fun.data='mean_se', color='black', position=position_dodge(.9), size=1, width=0)+
+  geom_hline(yintercept=0, size=0.5, color='gray40')+
+      geom_hline(mapping=aes(yintercept=meanEffectSize), 
+               size=2, alpha=0.75, color='gray80')+
+  geom_hline(mapping=aes(yintercept=meanEffectSize, color=Effect), 
+               size=1, alpha=1)+
+    scale_color_manual(values=c( 'tomato3', 'darkorchid4'))+
+  scale_fill_manual(values=c( 'tomato3', 'darkorchid4'),
+                     labels=c( "sentence problems", "code problems"))+
+  coord_cartesian(ylim=c(-2.5,12))+
+  coord_flip()+
   theme_classic()+
-  labs(color=element_blank(), size=element_blank(), x = NULL, y = NULL)+
+  labs(color=element_blank(), size=element_blank(), x = NULL, y = "BOLD response")+
   theme(axis.title.y = element_text(size=16), axis.text.y = element_text(size=12), 
-        axis.text.x = element_text(size=12, angle=35, vjust=1, hjust=1), 
+        axis.text.x = element_text(size=12), 
+        strip.background.x = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
         plot.title = element_text(size=18, hjust=0.5,face='bold'),
-        legend.text = element_text(size=16), legend.position=c(0.85, 0.9))
+        legend.text = element_text(size=12), legend.position='none')
 
 e2_lang_ROI
 ```
@@ -1101,7 +1206,7 @@ e2_lang_ROI
 
 ### SpatialWM responses
 
-```{r spatialWM plot, echo=FALSE}
+```{r spatialWM plot ScratchJr, echo=FALSE}
 dat2plot = dat.MDloc %>% filter(Effect %in% c('crit_CODE', 'crit_VERB', 'H', 'E'))
 dat2plot$Effect = factor(dat2plot$Effect, levels=c('crit_CODE', 'crit_VERB', 'H', 'E'))
 dat2plot = dat2plot %>% mutate(Effect = recode(Effect, 
@@ -1143,7 +1248,7 @@ e2_codeWM.LH
 e2_codeWM.RH
 ```
 
-```{r MD spatialWM stats, echo=FALSE}
+```{r MD spatialWM stats ScratchJr, echo=FALSE}
 data.model = dat2plot %>% filter(Effect %in% c('crit_CODE', 'crit_VERB', 'HardWM'))
 data.model$Effect = factor(data.model$Effect, levels=c('crit_CODE', 'crit_VERB', 'HardWM'))
 data.model$ROI <- paste(data.model$Hemisphere,data.model$ROI,sep="")
@@ -1205,7 +1310,7 @@ dat.langloc.inddiff = merge(dat.langloc.inddiff, acc_by_participant, by="Subject
 dat.MDloc.inddiff = merge(dat.MDloc.inddiff, acc_by_participant, by="Subject")
 ```
 
-```{r plot ind diffs, echo=FALSE}
+```{r plot ind diffs ScratchJr, echo=FALSE}
 y.weighted <- dat.langloc.inddiff %>% 
   group_by(Effect, Subject, Accuracy) %>% 
   summarize(EffectSize = weighted.mean(EffectSize, LocalizerSize))
@@ -1261,19 +1366,27 @@ cor.test(y.weighted.con$Accuracy, y.weighted.con$EnSentCon)
 
 # COMBINE ALL
 
-```{r big figure, echo=FALSE}
+```{r big figure top, echo=FALSE}
 
-(e1_md.lh | e2_md.lh | e1_md.rh | e2_md.rh | e1_lang | e2_lang | plot_layout(widths = c(1,1,1,1,1,1))) / 
+(e1_md.lh | plot_spacer() | e1_md.rh | plot_spacer() | e1_lang | plot_layout(widths = c(1,0.2,1,0.2,1))) / 
   plot_spacer() /
-  (e1_md_ROI.lh | e2_md_ROI.lh| e1_md_ROI.rh | e2_md_ROI.rh | e1_lang_ROI | e2_lang_ROI | plot_layout(widths = c(1,1,1,1,1,1))) /
-plot_layout(heights=c(1,0.1,0.8))
-ggsave("plots/main_plot.png", height=20, width=60, units="cm")
+  (e2_md.lh | plot_spacer() | e2_md.rh | plot_spacer() | e2_lang | plot_layout(widths = c(1,0.1,1,0.1,1))) /
+plot_layout(heights=c(1,0.1,1))
+ggsave("plots/mainplot.png", height=20, width=30, units="cm")
 ```
 
+```{r fROI bars, echo=FALSE}
+
+(e1_md_ROI.both | plot_spacer() | e1_lang_ROI | plot_layout(widths = c(2.4,.1,1))) / 
+  plot_spacer() /
+  (e2_md_ROI.both | plot_spacer() | e2_lang_ROI | plot_layout(widths = c(2.4,.1,1))) /
+plot_layout(heights=c(1,0,1))
+ggsave("plots/ROIplot.png", height=20, width=25, units="cm")
+```
 
 ```{r followup figure, echo=FALSE}
 (e1_md_mathstr | e1_md_sfi | e1_enjap | plot_spacer() | plot_layout(widths = c(1,1,1,1.5))) 
-ggsave("plots/followup.png", height=8, width=30, units="cm")
+#ggsave("plots/followup.png", height=8, width=30, units="cm")
 ```
 
 ```{r WM figure, echo=FALSE}
