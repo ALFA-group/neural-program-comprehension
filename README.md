@@ -3,6 +3,8 @@ Resources for the paper **Comprehension of computer code relies primarily on dom
 
 **Paper preprint:** https://www.biorxiv.org/content/10.1101/2020.04.16.045732v1
 
+**Published in eLife, December 2020:** https://elifesciences.org/articles/58906
+
 The labs involved:
 
 https://evlab.mit.edu/
