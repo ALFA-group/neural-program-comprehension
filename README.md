@@ -1,5 +1,5 @@
 # The Neuroscience of Program Comprehension
-Resources for the paper **Comprehension of computer code relies primarily on domain-general executive resources** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope H. Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
+Resources for the paper **Comprehension of computer code relies primarily on domain-general executive brain regions** by *Anna A. Ivanova, Shashank Srikant, Yotaro Sueoka, Hope H. Kean, Riva Dhamala, Una-May O'Reilly, Marina U. Bers, Evelina Fedorenko*
 
 **Paper preprint:** https://www.biorxiv.org/content/10.1101/2020.04.16.045732v1
 
